@@ -170,6 +170,7 @@ table{border-collapse:collapse;width:100%;}
   margin-bottom:1rem;
 }
 .hero h1 span{display:block;color:var(--gold-500);font-size:1em;font-weight:800;margin-top:.15em;}
+.hero h1 span.hero-h1-plain{color:var(--white);}
 .hero-lead{color:#c7d0e2;font-size:1.08rem;max-width:560px;}
 .hero-cta-row{display:flex;flex-wrap:wrap;gap:1rem;margin:1.75rem 0 2rem;}
 .hero-meta{display:flex;flex-wrap:wrap;gap:1.5rem;}
@@ -327,10 +328,14 @@ table{border-collapse:collapse;width:100%;}
 
 /* ---------- Audience ---------- */
 .audience-card{
+  display:flex;
+  align-items:center;
+  justify-content:center;
   background:var(--white);
   border:1px solid var(--gray-200);
   border-radius:var(--radius);
   padding:22px 18px;
+  min-height:96px;
   text-align:center;
   font-weight:700;
   font-size:.95rem;
