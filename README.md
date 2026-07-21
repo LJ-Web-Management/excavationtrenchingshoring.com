@@ -13,7 +13,7 @@ index.html                          — main landing page (hero, courses, curric
 frequently-asked-questions/index.html — standalone FAQ resource page
 css/styles.css                      — all styling
 js/main.js                          — mobile nav toggle, FAQ accordion, pricing toggle, enroll form UX
-images/ets-logo.svg                 — site logo (navy/gold, transparent background)
+images/ets-logo.png                 — site logo (navy/gold, transparent background)
 ```
 
 ## Current state
