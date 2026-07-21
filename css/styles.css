@@ -84,11 +84,11 @@ table{border-collapse:collapse;width:100%;}
   display:flex;align-items:center;justify-content:space-between;
   padding-top:14px;padding-bottom:14px;
 }
-.logo{display:flex;align-items:center;gap:.6rem;flex-shrink:0;min-width:0;}
+.logo{display:flex;align-items:center;gap:.6rem;min-width:0;}
 .logo-icon{height:clamp(40px,7vw,58px);width:auto;max-width:100%;display:block;flex-shrink:0;}
 .logo-icon-footer{filter:brightness(0) invert(1);}
-.logo-text{display:flex;flex-direction:column;line-height:1.15;white-space:nowrap;}
-.logo-mark{font-size:1.05rem;font-weight:800;letter-spacing:.3px;color:var(--navy-900);}
+.logo-text{display:flex;flex-direction:column;line-height:1.15;white-space:nowrap;min-width:0;overflow:hidden;}
+.logo-mark{font-size:clamp(.75rem,2.4vw,1.05rem);font-weight:800;letter-spacing:.2px;color:var(--navy-900);overflow:hidden;text-overflow:ellipsis;}
 .logo-sub{font-size:.62rem;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--gray-500);}
 .logo-mark-footer{color:var(--white);}
 .logo-sub-footer{color:#8b9ab8;white-space:normal;}
@@ -654,7 +654,7 @@ table{border-collapse:collapse;width:100%;}
   .header-inner{gap:.5rem;}
   .header-actions{gap:.6rem;}
   .logo-sub{display:none;}
-  .logo-mark{font-size:.95rem;}
+  .logo-mark{font-size:clamp(.62rem,3.4vw,.95rem);}
   .logo-icon{height:34px;}
 }
 
