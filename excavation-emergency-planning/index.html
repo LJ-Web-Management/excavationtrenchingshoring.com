@@ -239,7 +239,7 @@
     </div>
 
   </div>
-  <div class="footer-grid footer-grid-legal">
+  <div class="container footer-grid footer-grid-legal">
     <div class="footer-col">
       <h4 class="footer-col-heading">Policies</h4>
       <ul class="footer-link-list footer-link-list-inline">
@@ -263,7 +263,6 @@
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 Tawk_API.autoStart = false;
-Tawk_API.onLoad = function(){ Tawk_API.start(); };
 
 setTimeout(function(){
   Tawk_LoadStart = new Date();
@@ -275,6 +274,20 @@ setTimeout(function(){
     s1.setAttribute('crossorigin','*');
     s0.parentNode.insertBefore(s1,s0);
   })();
+
+  // Tawk_API.onLoad isn't reliably invoked by this widget build, so poll
+  // for Tawk_API.showWidget to become available instead, then reveal just
+  // the launcher bubble (never auto-opens the chat window).
+  var attempts = 0;
+  var poll = setInterval(function(){
+    attempts++;
+    if (typeof Tawk_API.showWidget === 'function') {
+      Tawk_API.showWidget();
+      clearInterval(poll);
+    } else if (attempts >= 40) {
+      clearInterval(poll);
+    }
+  }, 250);
 }, 2500);
 </script>
 <!--End of Tawk.to Script-->

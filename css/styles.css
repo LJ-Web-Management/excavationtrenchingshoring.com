@@ -644,48 +644,6 @@ table{border-collapse:collapse;width:100%;}
 .footer-bottom p{font-size:.82rem;color:var(--navy-900);font-weight:700;text-align:center;margin:0;}
 
 /* ---------- Responsive ---------- */
-@media (min-width:1025px){
-  .main-nav{
-    position:static;
-    display:flex;
-    flex-direction:row;
-    align-items:center;
-    background:none;
-    border-bottom:none;
-    box-shadow:none;
-    padding:0;
-    gap:1.1rem;
-    flex-shrink:0;
-  }
-  .header-actions{flex-shrink:0;}
-  .logo{flex-shrink:0;min-width:auto;}
-  .main-nav a{
-    border-bottom:none;
-    padding:0;
-    white-space:nowrap;
-    font-size:.87rem;
-  }
-  .main-nav a.is-active{color:var(--gold-600);}
-  .nav-phone,.nav-email{display:none;}
-  .nav-toggle{display:none;}
-  .nav-dropdown{position:relative;flex-direction:row;}
-  .nav-dropdown-panel{
-    display:none;
-    position:absolute;top:100%;left:50%;transform:translateX(-50%);
-    margin-top:14px;padding:8px;
-    background:var(--white);border:1px solid var(--gray-200);border-radius:10px;
-    box-shadow:var(--shadow-md);
-    min-width:280px;z-index:150;
-  }
-  .nav-dropdown:hover .nav-dropdown-panel,
-  .nav-dropdown:focus-within .nav-dropdown-panel{display:flex;}
-  .nav-dropdown-panel a{
-    padding:.6rem .75rem;border-radius:6px;white-space:normal;
-    border-bottom:none;font-size:.85rem;
-  }
-  .nav-dropdown-panel a:hover{background:var(--gray-50);}
-}
-
 @media (max-width:960px){
   .hero-inner{grid-template-columns:1fr;}
   .grid-3{grid-template-columns:repeat(2,1fr);}
@@ -770,8 +728,8 @@ table{border-collapse:collapse;width:100%;}
 .footer-link-list li{margin-bottom:.55rem;}
 .footer-link-list a{font-size:.87rem;color:#c7d0e2;}
 .footer-link-list a:hover{color:var(--gold-500);}
-.footer-grid-legal{border-bottom:1px solid rgba(255,255,255,.12);padding:24px 0;grid-template-columns:1fr;}
-.footer-link-list-inline{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;}
+.footer-grid-legal{border-bottom:1px solid rgba(255,255,255,.12);padding-top:32px;padding-bottom:32px;margin-top:8px;grid-template-columns:1fr;}
+.footer-link-list-inline{display:flex;flex-wrap:wrap;gap:.75rem 2rem;}
 .footer-link-list-inline li{margin-bottom:0;}
 
 /* ---------- Generic content-page building blocks (used across new pages) ---------- */
