@@ -615,6 +615,16 @@ table{border-collapse:collapse;width:100%;}
 .footer-legal strong{color:#dfe6f2;}
 .footer-legal a{color:var(--gold-500);font-weight:700;text-decoration:underline;}
 .footer-legal a:hover{color:#ffc233;}
+.footer-address{font-size:.85rem;color:#9aa8c7;margin-top:.75rem;}
+.footer-badges{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:16px;}
+.footer-badges a{
+  display:flex;align-items:center;justify-content:center;
+  background:var(--white);
+  border-radius:6px;
+  padding:6px 10px;
+  height:40px;
+}
+.footer-badges img{height:100%;width:auto;display:block;}
 
 .footer-col-heading{
   font-size:.78rem;text-transform:uppercase;letter-spacing:1px;
