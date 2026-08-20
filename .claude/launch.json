@@ -4,8 +4,8 @@
     {
       "name": "static-preview",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "python3 -m http.server ${PORT:-8935}"],
-      "port": 8935,
+      "runtimeArgs": ["-c", "python3 -m http.server ${PORT:-5002}"],
+      "port": 5002,
       "autoPort": true
     }
   ]

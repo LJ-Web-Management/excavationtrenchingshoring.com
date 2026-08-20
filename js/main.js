@@ -178,4 +178,22 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  // Course-picker widget ("Which Course Do I Need?") - click a duty, see the
+  // recommended course. Used on the homepage teaser and the dedicated page.
+  document.querySelectorAll('.course-picker').forEach(function (picker) {
+    var buttons = picker.querySelectorAll('.course-picker-option');
+    var results = picker.querySelectorAll('.course-picker-result');
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        buttons.forEach(function (b) { b.classList.toggle('active', b === btn); });
+        results.forEach(function (r) {
+          r.hidden = r.dataset.result !== btn.dataset.answer;
+        });
+        var activeResult = picker.querySelector('.course-picker-result[data-result="' + btn.dataset.answer + '"]');
+        if (activeResult) activeResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    });
+  });
+
 });
