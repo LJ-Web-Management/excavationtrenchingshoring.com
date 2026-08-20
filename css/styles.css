@@ -106,6 +106,9 @@ table{border-collapse:collapse;width:100%;}
 .main-nav.open{display:flex;}
 .main-nav a{font-weight:600;font-size:.93rem;color:var(--navy-800);padding:.65rem 0;border-bottom:1px solid var(--gray-100);position:relative;}
 .main-nav a:hover{color:var(--gold-600);}
+.nav-dropdown{display:flex;flex-direction:column;}
+.nav-dropdown-panel{display:flex;flex-direction:column;padding-left:1rem;}
+.nav-dropdown-panel a{font-size:.85rem;font-weight:600;}
 .nav-phone{
   display:flex;align-items:center;gap:.5rem;
   color:var(--gold-600);font-weight:700;
@@ -198,6 +201,7 @@ table{border-collapse:collapse;width:100%;}
   display:flex;justify-content:space-between;align-items:center;gap:.75rem;
   padding:.85rem 1rem;border:1px solid var(--gray-200);border-radius:10px;
   transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background-color .2s ease;
+  text-decoration:none;color:inherit;
 }
 .hero-card-course:hover{
   transform:translateY(-3px) scale(1.015);
@@ -601,7 +605,7 @@ table{border-collapse:collapse;width:100%;}
 .site-footer{background:var(--navy-900);color:#c7d0e2;padding:56px 0 0;}
 .footer-grid{
   display:grid;
-  grid-template-columns:1.4fr 1fr;
+  grid-template-columns:1.2fr 0.9fr 1fr;
   gap:48px;
   padding-bottom:40px;
   border-bottom:1px solid rgba(255,255,255,.12);
@@ -664,6 +668,22 @@ table{border-collapse:collapse;width:100%;}
   .main-nav a.is-active{color:var(--gold-600);}
   .nav-phone,.nav-email{display:none;}
   .nav-toggle{display:none;}
+  .nav-dropdown{position:relative;flex-direction:row;}
+  .nav-dropdown-panel{
+    display:none;
+    position:absolute;top:100%;left:50%;transform:translateX(-50%);
+    margin-top:14px;padding:8px;
+    background:var(--white);border:1px solid var(--gray-200);border-radius:10px;
+    box-shadow:var(--shadow-md);
+    min-width:280px;z-index:150;
+  }
+  .nav-dropdown:hover .nav-dropdown-panel,
+  .nav-dropdown:focus-within .nav-dropdown-panel{display:flex;}
+  .nav-dropdown-panel a{
+    padding:.6rem .75rem;border-radius:6px;white-space:normal;
+    border-bottom:none;font-size:.85rem;
+  }
+  .nav-dropdown-panel a:hover{background:var(--gray-50);}
 }
 
 @media (max-width:960px){

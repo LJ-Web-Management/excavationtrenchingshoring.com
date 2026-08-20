@@ -129,19 +129,23 @@ HOME_BODY = """
         <div class="hero-card-badge">2 Courses, 1 Compliance Path</div>
         <h3>Course Snapshot</h3>
         <ul class="hero-card-courses">
-          <li class="hero-card-course">
-            <span>
-              <span class="hero-card-course-name">Excavation, Trenching &amp; Shoring Safety</span>
-              <span class="hero-card-course-meta">3 hrs &middot; Crew-level hazard awareness &amp; safe work practices</span>
-            </span>
-            <span class="hero-card-course-price">$59.99</span>
+          <li>
+            <a class="hero-card-course" href="excavation-trenching-shoring-safety-training/">
+              <span>
+                <span class="hero-card-course-name">Excavation, Trenching &amp; Shoring Safety</span>
+                <span class="hero-card-course-meta">3 hrs &middot; Crew-level hazard awareness &amp; safe work practices</span>
+              </span>
+              <span class="hero-card-course-price">$59.99</span>
+            </a>
           </li>
-          <li class="hero-card-course">
-            <span>
-              <span class="hero-card-course-name">Competent Person</span>
-              <span class="hero-card-course-meta">8 hrs &middot; Daily inspections, protective systems &amp; program oversight</span>
-            </span>
-            <span class="hero-card-course-price">$159.99</span>
+          <li>
+            <a class="hero-card-course" href="competent-person-excavation-trenching-shoring-training/">
+              <span>
+                <span class="hero-card-course-name">Competent Person</span>
+                <span class="hero-card-course-meta">8 hrs &middot; Daily inspections, protective systems &amp; program oversight</span>
+              </span>
+              <span class="hero-card-course-price">$159.99</span>
+            </a>
           </li>
         </ul>
       </div>
@@ -195,30 +199,6 @@ HOME_BODY = """
       <div class="accred-cta">
         <a href="https://hazwoper-osha.com/about" target="_blank" rel="noopener" class="btn btn-outline">View Certifications &amp; Accreditations</a>
         <a href="credential-transparency/" class="btn btn-outline">Read Our Credential Transparency Page</a>
-      </div>
-
-      <p class="accred-disclaimer">
-        <strong>Important:</strong> OSHA does not certify, approve, or endorse individual training providers or
-        courses. Course content on this site is <strong>OSHA-aligned</strong> - built around OSHA 29 CFR 1926
-        Subpart P - and designed to support employer compliance. It is not an OSHA certification, approval, or
-        endorsement of this site, HAZWOPER OSHA Training, LLC, or Industrial Certified Training, LLC.
-      </p>
-    </div>
-  </section>
-
-  <!-- AI / SEARCH SUMMARY BLOCK -->
-  <section class="section section-alt summary-block-section">
-    <div class="container">
-      <div class="summary-block">
-        <p class="summary-block-label">In short</p>
-        <p>
-          ExcavationTrenchingShoring.com provides OSHA-aligned excavation, trenching, and shoring training for
-          construction crews, utility workers, equipment operators, supervisors, and designated competent persons.
-          Courses are self-paced, available in English and Spanish, and include a certificate of completion.
-          Training is provided through HAZWOPER OSHA Training, LLC. Employers remain responsible for site-specific
-          instruction, hazard assessment, protective system selection, daily inspections, and competent person
-          designation.
-        </p>
       </div>
     </div>
   </section>
@@ -301,7 +281,6 @@ HOME_BODY = """
             <span class="course-card-price">$59.99 <span>/ seat</span></span>
             <a href="excavation-trenching-shoring-safety-training/" class="btn btn-primary" data-course="safety">Course Details</a>
           </div>
-          <p class="course-card-also"><a href="https://hazwoper-osha.com/online-courses/osha-excavation-trenching-and-shoring-safety-training" target="_blank" rel="noopener">Also available through HAZWOPER OSHA Training &rarr;</a></p>
         </div>
 
         <div class="course-card">
@@ -323,7 +302,6 @@ HOME_BODY = """
             <span class="course-card-price">$159.99 <span>/ seat</span></span>
             <a href="competent-person-excavation-trenching-shoring-training/" class="btn btn-primary" data-course="competent">Course Details</a>
           </div>
-          <p class="course-card-also"><a href="https://hazwoper-osha.com/online-courses/competent-person-for-excavation-trenching-and-shoring" target="_blank" rel="noopener">Also available through HAZWOPER OSHA Training &rarr;</a></p>
         </div>
       </div>
 

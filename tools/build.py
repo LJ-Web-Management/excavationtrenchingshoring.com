@@ -144,7 +144,13 @@ def render_header(*, prefix, active=None):
 
     <nav class="main-nav" id="mainNav">
       {a(prefix + 'index.html#overview', 'Overview', 'overview')}
-      {a(prefix + 'index.html#courses', 'Courses', 'courses')}
+      <div class="nav-dropdown">
+        {a(prefix + 'index.html#courses', 'Courses', 'courses')}
+        <div class="nav-dropdown-panel">
+          <a href="{prefix}excavation-trenching-shoring-safety-training/">Excavation, Trenching &amp; Shoring Safety Training</a>
+          <a href="{prefix}competent-person-excavation-trenching-shoring-training/">Competent Person Training</a>
+        </div>
+      </div>
       {a(prefix + 'index.html#accreditations', 'Accreditations', 'accreditations')}
       {a(prefix + 'which-excavation-course-do-i-need/', 'Which Course?', 'which-course')}
       {a(prefix + 'index.html#pricing', 'Pricing', 'pricing')}
