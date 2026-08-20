@@ -89,12 +89,9 @@ def course_picker_widget(full=False, prefix="../"):
 
 
 def breadcrumb_nav(name):
-    return f"""
-  <nav class="breadcrumb-nav" aria-label="Breadcrumb">
-    <div class="container">
-      <a href="../index.html">Home</a> &rsaquo; <span>{name}</span>
-    </div>
-  </nav>"""
+    # Visible breadcrumb path removed per request; BreadcrumbList schema
+    # (breadcrumb_schema, used separately) still carries this for SEO.
+    return ""
 
 # ---------------------------------------------------------------------------
 # HOMEPAGE
