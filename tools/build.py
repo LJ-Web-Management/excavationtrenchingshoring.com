@@ -164,8 +164,35 @@ def render_header(*, prefix, active=None):
           <a href="{prefix}competent-person-excavation-trenching-shoring-training/">Competent Person Training</a>
         </div>
       </div>
-      {a(prefix + 'index.html#accreditations', 'Accreditations', 'accreditations')}
       {a(prefix + 'which-excavation-course-do-i-need/', 'Which Course?', 'which-course')}
+      <div class="nav-dropdown">
+        <a href="{prefix}osha-excavation-standards/">Resources</a>
+        <div class="nav-dropdown-panel">
+          <a href="{prefix}osha-excavation-standards/">OSHA Excavation Standards</a>
+          <a href="{prefix}osha-subpart-p-training-guide/">OSHA Subpart P Training Guide</a>
+          <a href="{prefix}excavation-protective-systems/">Protective Systems</a>
+          <a href="{prefix}soil-classification-training/">Soil Classification</a>
+          <a href="{prefix}underground-utility-safety/">Underground Utility Safety</a>
+          <a href="{prefix}excavation-emergency-planning/">Emergency Planning</a>
+          <a href="{prefix}state-osha-plan-requirements/">State OSHA Plan Requirements</a>
+          <a href="{prefix}credential-transparency/">Credential Transparency</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <a href="{prefix}excavation-safety-vs-competent-person-training/">Compare</a>
+        <div class="nav-dropdown-panel">
+          <a href="{prefix}excavation-safety-vs-competent-person-training/">Safety vs. Competent Person</a>
+          <a href="{prefix}trenching-vs-excavation-training/">Trenching vs. Excavation</a>
+          <a href="{prefix}sloping-benching-shoring-shielding-explained/">Sloping, Benching, Shoring &amp; Shielding</a>
+          <a href="{prefix}excavation-competent-person-requirements/">Competent Person Requirements</a>
+          <a href="{prefix}excavation-training-for-utility-crews/">Training for Utility Crews</a>
+          <a href="{prefix}excavation-training-for-municipal-crews/">Training for Municipal Crews</a>
+        </div>
+      </div>
+      {a(prefix + 'index.html#accreditations', 'Accreditations', 'accreditations')}
+      {a(prefix + 'about/', 'About')}
+      {a(prefix + 'instructors-and-training-provider/', 'Instructors & Provider')}
+      {a(prefix + 'reviews/', 'Reviews')}
       {a(prefix + 'index.html#pricing', 'Pricing', 'pricing')}
       {a(prefix + 'frequently-asked-questions/', 'FAQ', 'faq')}
       <a href="tel:18664296742" class="nav-phone">

@@ -661,6 +661,8 @@ table{border-collapse:collapse;width:100%;}
   .course-grid{grid-template-columns:1fr;}
   .curriculum-columns{grid-template-columns:1fr;gap:8px;}
   .pricing-grid{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:36px;}
+  .footer-col-brand{grid-column:1 / -1;}
 }
 
 @media (max-width:480px){
@@ -678,6 +680,7 @@ table{border-collapse:collapse;width:100%;}
   .section{padding:64px 0;}
   .pricing-card{padding:28px 20px;}
   .footer-grid{grid-template-columns:1fr;gap:36px;}
+  .footer-col-brand{grid-column:auto;}
   .curriculum-list li{gap:14px;}
   .compare-table th,.compare-table td{padding:12px 14px;font-size:.85rem;}
 }
