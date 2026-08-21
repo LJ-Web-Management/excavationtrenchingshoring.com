@@ -555,7 +555,7 @@ HOME_BODY = """
             <li>Aligned with 29 CFR 1926 Subpart P</li>
           </ul>
 
-          <form class="enroll-form" id="enrollFormSafety" data-price-per-seat="59.99" data-success-target="formSuccessSafety">
+          <form class="enroll-form" id="enrollFormSafety" data-price-per-seat="59.99" data-course-code="safety" data-success-target="formSuccessSafety">
             <div class="form-row">
               <label for="seatsSafety">Number of Seats</label>
               <input type="number" id="seatsSafety" name="seats" min="1" value="1" required>
@@ -605,7 +605,7 @@ HOME_BODY = """
             <li>Aligned with 29 CFR 1926 Subpart P</li>
           </ul>
 
-          <form class="enroll-form" id="enrollFormCompetent" data-price-per-seat="159.99" data-success-target="formSuccessCompetent">
+          <form class="enroll-form" id="enrollFormCompetent" data-price-per-seat="159.99" data-course-code="competent" data-success-target="formSuccessCompetent">
             <div class="form-row">
               <label for="seatsCompetent">Number of Seats</label>
               <input type="number" id="seatsCompetent" name="seats" min="1" value="1" required>
@@ -2313,6 +2313,237 @@ PAGES.append({
     "description": "45+ answers on OSHA excavation requirements, cave-in hazards, soil classification, protective systems, Competent Person duties, certificates, and course/certification details.",
     "body": FAQ_BODY,
     "extra_schema": breadcrumb_schema("FAQ", "/frequently-asked-questions/"),
+})
+
+# ---------------------------------------------------------------------------
+# CHECKOUT (Stripe + HAZWOPER OSHA order API)
+# ---------------------------------------------------------------------------
+
+CHECKOUT_HEAD_EXTRA = """<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
+<link rel="stylesheet" href="../css/checkout.css">
+<script src="../js/config.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>"""
+
+CHECKOUT_STATE_OPTIONS = """<option value="">Select a State</option>
+                  <option value="AL">Alabama</option>
+                  <option value="AK">Alaska</option>
+                  <option value="AZ">Arizona</option>
+                  <option value="AR">Arkansas</option>
+                  <option value="CA">California</option>
+                  <option value="CO">Colorado</option>
+                  <option value="CT">Connecticut</option>
+                  <option value="DE">Delaware</option>
+                  <option value="FL">Florida</option>
+                  <option value="GA">Georgia</option>
+                  <option value="HI">Hawaii</option>
+                  <option value="ID">Idaho</option>
+                  <option value="IL">Illinois</option>
+                  <option value="IN">Indiana</option>
+                  <option value="IA">Iowa</option>
+                  <option value="KS">Kansas</option>
+                  <option value="KY">Kentucky</option>
+                  <option value="LA">Louisiana</option>
+                  <option value="ME">Maine</option>
+                  <option value="MD">Maryland</option>
+                  <option value="MA">Massachusetts</option>
+                  <option value="MI">Michigan</option>
+                  <option value="MN">Minnesota</option>
+                  <option value="MS">Mississippi</option>
+                  <option value="MO">Missouri</option>
+                  <option value="MT">Montana</option>
+                  <option value="NE">Nebraska</option>
+                  <option value="NV">Nevada</option>
+                  <option value="NH">New Hampshire</option>
+                  <option value="NJ">New Jersey</option>
+                  <option value="NM">New Mexico</option>
+                  <option value="NY">New York</option>
+                  <option value="NC">North Carolina</option>
+                  <option value="ND">North Dakota</option>
+                  <option value="OH">Ohio</option>
+                  <option value="OK">Oklahoma</option>
+                  <option value="OR">Oregon</option>
+                  <option value="PA">Pennsylvania</option>
+                  <option value="RI">Rhode Island</option>
+                  <option value="SC">South Carolina</option>
+                  <option value="SD">South Dakota</option>
+                  <option value="TN">Tennessee</option>
+                  <option value="TX">Texas</option>
+                  <option value="UT">Utah</option>
+                  <option value="VT">Vermont</option>
+                  <option value="VA">Virginia</option>
+                  <option value="WA">Washington</option>
+                  <option value="WV">West Virginia</option>
+                  <option value="WI">Wisconsin</option>
+                  <option value="WY">Wyoming</option>"""
+
+CHECKOUT_BODY = """
+  <section class="section checkout-page-section">
+    <div class="container">
+
+      <div class="checkout-page-header">
+        <h1>Checkout</h1>
+        <p class="checkout-subtitle">Complete the checkout below to enroll in your excavation training course.</p>
+      </div>
+
+      <!-- SUCCESS CONFIRMATION VIEW (Shown after successful payment) -->
+      <div id="checkoutSuccessView" class="success-view-card" hidden>
+        <div class="success-icon-wrapper">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h2>Order Confirmed!</h2>
+        <p class="success-lead">Thank you for your purchase. Your payment has been processed successfully.</p>
+        <div class="success-details-card">
+          <div class="success-detail-row">
+            <span>Order Reference:</span>
+            <strong id="successOrderId">#---</strong>
+          </div>
+          <div class="success-detail-row">
+            <span>Confirmation Email Sent To:</span>
+            <strong id="successUserEmail">---</strong>
+          </div>
+        </div>
+        <div class="account-notice-callout success-callout">
+          <p>Check your email inbox for your receipt and LMS account login details to start your course training immediately.</p>
+        </div>
+        <a href="../index.html" class="btn btn-primary btn-lg">Return to Home</a>
+      </div>
+
+      <!-- MAIN CHECKOUT FORM (2-COLUMN LAYOUT) -->
+      <form id="stripeCheckoutForm" class="checkout-grid">
+        <!-- Left Column: Billing Information & Payment -->
+        <div class="checkout-main">
+          <div class="checkout-section">
+            <h3>Billing Information</h3>
+            <div class="form-row-group">
+              <div class="form-group">
+                <label for="billingFirstName">First Name <span class="required">*</span></label>
+                <input type="text" id="billingFirstName" name="firstName" class="form-control" required placeholder="First Name">
+              </div>
+              <div class="form-group">
+                <label for="billingLastName">Last Name <span class="required">*</span></label>
+                <input type="text" id="billingLastName" name="lastName" class="form-control" required placeholder="Last Name">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="billingCompany">Company Name</label>
+              <input type="text" id="billingCompany" name="company" class="form-control" placeholder="Company Name">
+            </div>
+
+            <div class="form-row-group">
+              <div class="form-group">
+                <label for="billingPhone">Phone <span class="required">*</span></label>
+                <input type="tel" id="billingPhone" name="phone" class="form-control" required placeholder="(555) 000-0000">
+                <div id="phone-error" class="payment-error-alert" style="margin-top:6px;font-size:.82rem;" hidden></div>
+              </div>
+              <div class="form-group">
+                <label for="billingEmail">Email Address <span class="required">*</span></label>
+                <input type="email" id="billingEmail" name="email" class="form-control" required placeholder="you@example.com">
+              </div>
+            </div>
+
+            <div class="form-row-group">
+              <div class="form-group">
+                <label for="billingAddress">Street Address <span class="required">*</span></label>
+                <input type="text" id="billingAddress" name="address" class="form-control" required placeholder="Street address">
+              </div>
+              <div class="form-group">
+                <label for="billingAddress2">Suite, Apt, Building</label>
+                <input type="text" id="billingAddress2" name="address2" class="form-control" placeholder="Apt, Suite, Unit, etc.">
+              </div>
+            </div>
+
+            <div class="form-row-group">
+              <div class="form-group">
+                <label for="billingCity">City <span class="required">*</span></label>
+                <input type="text" id="billingCity" name="city" class="form-control" required placeholder="City">
+              </div>
+              <div class="form-group">
+                <label for="billingState">State <span class="required">*</span></label>
+                <select id="billingState" name="state" class="form-control" required>
+                  """ + CHECKOUT_STATE_OPTIONS + """
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row-group">
+              <div class="form-group">
+                <label for="billingZip">Zip / Postal Code <span class="required">*</span></label>
+                <input type="text" id="billingZip" name="zip" class="form-control" required placeholder="Zip Code">
+              </div>
+              <div class="form-group">
+                <label for="billingCountry">Country <span class="required">*</span></label>
+                <select id="billingCountry" name="country" class="form-control" required>
+                  <option value="US" selected>United States</option>
+                  <option value="CA">Canada</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="checkout-section">
+            <h3>Payment</h3>
+
+            <div class="stripe-card-wrapper">
+              <div id="payment-element">
+                <!-- Stripe Payment Element dynamically mounts here -->
+              </div>
+              <div id="payment-error" class="payment-error-alert" hidden></div>
+            </div>
+
+            <button type="submit" id="submitPaymentBtn" class="btn btn-primary btn-block btn-lg btn-pay">
+              <span class="btn-text">Place Order</span>
+              <span class="btn-spinner" hidden></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Order Summary -->
+        <div class="checkout-sidebar">
+          <div class="order-summary-card">
+            <div class="order-summary-header">
+              <h3>Order Summary</h3>
+            </div>
+            <div class="order-summary-body">
+              <div class="summary-line-item">
+                <div class="summary-course-info">
+                  <span class="summary-course-name" id="summaryCourseName">Excavation, Trenching &amp; Shoring Safety Training</span>
+                  <span class="summary-qty" id="summaryCourseQty">Qty: 1</span>
+                </div>
+                <span class="summary-amount" id="summaryCourseAmount">$59.99</span>
+              </div>
+              <hr class="summary-divider">
+              <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="summarySubtotal">$59.99</span>
+              </div>
+              <div class="summary-row summary-total">
+                <span>Total</span>
+                <span id="summaryTotal">$59.99</span>
+              </div>
+            </div>
+
+            <div class="account-notice-callout">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+              <p>An account will be automatically created at checkout. Login details will be emailed to you.</p>
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </section>"""
+
+PAGES.append({
+    "slug": "checkout",
+    "active": None,
+    "title": "Checkout | Excavation, Trenching & Shoring Training",
+    "description": "Complete your purchase of OSHA-aligned excavation, trenching, and shoring training. Secure checkout, instant access, and certificates included.",
+    "body": CHECKOUT_BODY,
+    "extra_head_raw": CHECKOUT_HEAD_EXTRA,
+    "extra_body_scripts": '<script src="../js/checkout.js"></script>',
+    "main_class": "checkout-page-main",
 })
 
 PAGES.append({

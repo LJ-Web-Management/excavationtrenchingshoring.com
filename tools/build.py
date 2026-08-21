@@ -103,7 +103,7 @@ def breadcrumb_schema(name, path):
     )
 
 
-def render_head(*, prefix, title, description, canonical_path, extra_schema="", og_title=None, og_description=None):
+def render_head(*, prefix, title, description, canonical_path, extra_schema="", og_title=None, og_description=None, extra_head_raw=""):
     og_title = og_title or title
     og_description = og_description or description
     icon = f'{prefix}images/ets-logo.png'
@@ -135,6 +135,7 @@ def render_head(*, prefix, title, description, canonical_path, extra_schema="", 
 <link rel="stylesheet" href="{css}">
 {org_schema()}
 {extra_schema}
+{extra_head_raw}
 </head>"""
 
 
@@ -332,7 +333,7 @@ def render_footer(*, prefix):
 {TAWK_SCRIPT}"""
 
 
-def render_page(*, slug, title, description, body, extra_schema="", og_title=None, og_description=None, active=None, is_home=False):
+def render_page(*, slug, title, description, body, extra_schema="", og_title=None, og_description=None, active=None, is_home=False, extra_head_raw="", extra_body_scripts="", main_class=""):
     prefix = "" if is_home else "../"
     canonical_path = "/" if is_home else f"/{slug}/"
     head = render_head(
@@ -343,19 +344,22 @@ def render_page(*, slug, title, description, body, extra_schema="", og_title=Non
         extra_schema=extra_schema,
         og_title=og_title,
         og_description=og_description,
+        extra_head_raw=extra_head_raw,
     )
     header = render_header(prefix=prefix, active=active)
     footer = render_footer(prefix=prefix)
+    main_class_attr = f' class="{main_class}"' if main_class else ""
     return f"""{head}
 <body>
 
 {header}
 
-<main id="main">
+<main id="main"{main_class_attr}>
 {body}
 </main>
 
 {footer}
+{extra_body_scripts}
 </body>
 </html>
 """
@@ -420,6 +424,9 @@ if __name__ == "__main__":
             og_description=page.get("og_description"),
             active=page.get("active"),
             is_home=is_home,
+            extra_head_raw=page.get("extra_head_raw", ""),
+            extra_body_scripts=page.get("extra_body_scripts", ""),
+            main_class=page.get("main_class", ""),
         )
         write_page(page["slug"], html, is_home=is_home)
 

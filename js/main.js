@@ -168,7 +168,14 @@ document.addEventListener('DOMContentLoaded', function () {
       updatePricing();
     }
 
-    if (formSuccess) {
+    var courseCode = enrollForm.dataset.courseCode;
+    if (courseCode) {
+      enrollForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var seats = seatsInput ? Math.max(1, parseInt(seatsInput.value, 10) || 1) : 1;
+        window.location.href = 'checkout/?course=' + encodeURIComponent(courseCode) + '&seats=' + seats;
+      });
+    } else if (formSuccess) {
       enrollForm.addEventListener('submit', function (e) {
         e.preventDefault();
         enrollForm.hidden = true;
