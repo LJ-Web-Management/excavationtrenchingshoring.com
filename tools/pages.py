@@ -2323,7 +2323,8 @@ CHECKOUT_HEAD_EXTRA = """<link rel="stylesheet" href="https://cdn.jsdelivr.net/n
 <link rel="stylesheet" href="../css/checkout.css">
 <script src="../js/config.js"></script>
 <script src="https://js.stripe.com/v3/"></script>
-<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>"""
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKIHiyhH9aypG0hdYeVU4kM1BwEQqr5do&libraries=places" async defer></script>"""
 
 CHECKOUT_STATE_OPTIONS = """<option value="">Select a State</option>
                   <option value="AL">Alabama</option>
