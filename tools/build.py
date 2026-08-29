@@ -21,7 +21,8 @@ GA_TAG = """<!-- Google tag (gtag.js) -->
   gtag('js', new Date());
 
   gtag('config', 'G-4965R39GCF');
-</script>"""
+</script>
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="6BpOTc7DCKdhopmJKKlYcQ" async></script>"""
 
 TAWK_SCRIPT = """<!--Start of Tawk.to Script-->
 <script type="text/javascript">
