@@ -373,7 +373,6 @@ document.addEventListener('DOMContentLoaded', function () {
           payment_method_id: paymentMethodId,
           order_type: 'normal',
           order_status: 'pending',
-          order_form: 'excavationtrenchingshoring.com',
           order_from: 'excavationtrenchingshoring.com',
           billing_first_name: firstName,
           billing_last_name: lastName,

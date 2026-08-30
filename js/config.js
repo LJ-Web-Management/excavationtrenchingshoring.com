@@ -36,3 +36,26 @@ function tierPrice(basePrice, tier) {
 function formatMoney(amount) {
   return Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
+
+function tierLabel(tier) {
+  return tier.min === tier.max ? String(tier.min) : tier.min + '-' + tier.max.toLocaleString('en-US');
+}
+
+// Mobile nav toggle (shared by all pages; lets the checkout page run without main.js)
+document.addEventListener('DOMContentLoaded', function () {
+  var navToggle = document.getElementById('navToggle');
+  var mainNav = document.getElementById('mainNav');
+  if (navToggle && mainNav && !navToggle.dataset.navWired) {
+    navToggle.dataset.navWired = '1';
+    navToggle.addEventListener('click', function () {
+      var isOpen = mainNav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    mainNav.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        mainNav.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+});

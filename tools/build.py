@@ -221,7 +221,7 @@ def render_header(*, prefix, active=None):
 </header>"""
 
 
-def render_footer(*, prefix):
+def render_footer(*, prefix, include_main_js=True):
     p = prefix
     return f"""<footer class="site-footer">
   <div class="container footer-grid">
@@ -329,12 +329,13 @@ def render_footer(*, prefix):
   </div>
 </footer>
 
-<script src="{p}js/main.js"></script>
+<script src="{p}js/config.js"></script>
+{f'<script src="{p}js/main.js"></script>' if include_main_js else ''}
 
 {TAWK_SCRIPT}"""
 
 
-def render_page(*, slug, title, description, body, extra_schema="", og_title=None, og_description=None, active=None, is_home=False, extra_head_raw="", extra_body_scripts="", main_class=""):
+def render_page(*, slug, title, description, body, extra_schema="", og_title=None, og_description=None, active=None, is_home=False, extra_head_raw="", extra_body_scripts="", main_class="", include_main_js=True):
     prefix = "" if is_home else "../"
     canonical_path = "/" if is_home else f"/{slug}/"
     head = render_head(
@@ -348,7 +349,7 @@ def render_page(*, slug, title, description, body, extra_schema="", og_title=Non
         extra_head_raw=extra_head_raw,
     )
     header = render_header(prefix=prefix, active=active)
-    footer = render_footer(prefix=prefix)
+    footer = render_footer(prefix=prefix, include_main_js=include_main_js)
     main_class_attr = f' class="{main_class}"' if main_class else ""
     return f"""{head}
 <body>
@@ -428,6 +429,7 @@ if __name__ == "__main__":
             extra_head_raw=page.get("extra_head_raw", ""),
             extra_body_scripts=page.get("extra_body_scripts", ""),
             main_class=page.get("main_class", ""),
+            include_main_js=page.get("include_main_js", True),
         )
         write_page(page["slug"], html, is_home=is_home)
 
