@@ -108,6 +108,7 @@ def render_head(*, prefix, title, description, canonical_path, extra_schema="", 
     og_title = og_title or title
     og_description = og_description or description
     icon = f'{prefix}images/ets-logo.png'
+    social_image = "https://excavationtrenchingshoring.com/images/ets-logo.png"
     css = f'{prefix}css/styles.css'
     canonical = f"https://excavationtrenchingshoring.com{canonical_path}"
     return f"""<!DOCTYPE html>
@@ -127,9 +128,15 @@ def render_head(*, prefix, title, description, canonical_path, extra_schema="", 
 <meta property="og:url" content="{canonical}">
 <meta property="og:title" content="{og_title}">
 <meta property="og:description" content="{og_description}">
+<meta property="og:image" content="{social_image}">
+<meta property="og:image:width" content="975">
+<meta property="og:image:height" content="1181">
+<meta property="og:image:alt" content="ExcavationTrenchingShoring.com logo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{og_title}">
 <meta name="twitter:description" content="{og_description}">
+<meta name="twitter:image" content="{social_image}">
+<meta name="twitter:image:alt" content="ExcavationTrenchingShoring.com logo">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -382,6 +389,8 @@ def write_page(slug, html, is_home=False):
 def write_sitemap(pages):
     urls = []
     for page in pages:
+        if page.get("noindex"):
+            continue
         path = "/" if page.get("is_home") else f"/{page['slug']}/"
         priority = "1.0" if page.get("is_home") else ("0.8" if page.get("active") else "0.6")
         urls.append(

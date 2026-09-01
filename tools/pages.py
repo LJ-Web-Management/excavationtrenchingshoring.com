@@ -758,7 +758,7 @@ HOME_SCHEMA = """<script type="application/ld+json">
     "courseMode": "online",
     "courseWorkload": "PT3H"
   },
-  "offers": {"@type": "Offer", "price": "59.99", "priceCurrency": "USD", "url": "https://excavationtrenchingshoring.com/excavation-trenching-shoring-safety-training/"}
+  "offers": {"@type": "Offer", "price": 59.99, "priceCurrency": "USD", "url": "https://excavationtrenchingshoring.com/excavation-trenching-shoring-safety-training/"}
 }
 </script>
 <script type="application/ld+json">
@@ -778,7 +778,7 @@ HOME_SCHEMA = """<script type="application/ld+json">
     "courseMode": "online",
     "courseWorkload": "PT8H"
   },
-  "offers": {"@type": "Offer", "price": "159.99", "priceCurrency": "USD", "url": "https://excavationtrenchingshoring.com/competent-person-excavation-trenching-shoring-training/"}
+  "offers": {"@type": "Offer", "price": 159.99, "priceCurrency": "USD", "url": "https://excavationtrenchingshoring.com/competent-person-excavation-trenching-shoring-training/"}
 }
 </script>"""
 
@@ -789,8 +789,8 @@ HOME_SCHEMA = """<script type="application/ld+json">
 PAGES.append({
     "slug": "credential-transparency",
     "active": "accreditations",
-    "title": "Credential Transparency | What Your Excavation Training Certificate Means",
-    "description": "What a certificate of completion means (and doesn't mean), OSHA-aligned training vs. OSHA certification, IACET CEUs, and how this differs from an OSHA Outreach card.",
+    "title": "Credential Transparency for Excavation Training",
+    "description": "What a certificate of completion means, OSHA-aligned training vs. certification, IACET CEUs, and how this differs from an OSHA Outreach card.",
     "body": breadcrumb_nav("Credential Transparency") + hero_solo(
         "Credential Transparency",
         "What Your Certificate Does - and Doesn't - Mean",
@@ -1236,7 +1236,7 @@ SAFETY_SCHEMA = """<script type="application/ld+json">
     "courseMode": "online",
     "courseWorkload": "PT3H"
   },
-  "offers": {"@type": "Offer", "price": "59.99", "priceCurrency": "USD", "url": "https://excavationtrenchingshoring.com/excavation-trenching-shoring-safety-training/"}
+  "offers": {"@type": "Offer", "price": 59.99, "priceCurrency": "USD", "url": "https://excavationtrenchingshoring.com/excavation-trenching-shoring-safety-training/"}
 }
 </script>""" + breadcrumb_schema("Excavation, Trenching & Shoring Safety Training", "/excavation-trenching-shoring-safety-training/")
 
@@ -1380,15 +1380,15 @@ COMPETENT_SCHEMA = """<script type="application/ld+json">
     "courseMode": "online",
     "courseWorkload": "PT8H"
   },
-  "offers": {"@type": "Offer", "price": "159.99", "priceCurrency": "USD", "url": "https://excavationtrenchingshoring.com/competent-person-excavation-trenching-shoring-training/"}
+  "offers": {"@type": "Offer", "price": 159.99, "priceCurrency": "USD", "url": "https://excavationtrenchingshoring.com/competent-person-excavation-trenching-shoring-training/"}
 }
 </script>""" + breadcrumb_schema("Competent Person for Excavation, Trenching & Shoring Training", "/competent-person-excavation-trenching-shoring-training/")
 
 PAGES.append({
     "slug": "competent-person-excavation-trenching-shoring-training",
     "active": "courses",
-    "title": "Competent Person for Excavation, Trenching & Shoring Training | 8-Hour Online Course",
-    "description": "8-hour, OSHA-aligned Competent Person course: soil classification, protective systems, daily inspections. Certificate of completion, English & Spanish, $159.99/seat.",
+    "title": "Competent Person Excavation Training | 8-Hour Course",
+    "description": "8-hour, OSHA-aligned Competent Person course: soil classification, protective systems, daily inspections. $159.99/seat, English & Spanish.",
     "body": COMPETENT_BODY,
     "extra_schema": COMPETENT_SCHEMA,
 })
@@ -1424,7 +1424,7 @@ PAGES.append({
     "slug": "which-excavation-course-do-i-need",
     "active": "which-course",
     "title": "Which Excavation Course Do I Need? | Course Decision Guide",
-    "description": "Not sure whether you need Excavation, Trenching & Shoring Safety Training or Competent Person training? Answer one question or use the role-by-role comparison table.",
+    "description": "Not sure which excavation course you need? Answer one question or use our role-by-role comparison table to find out.",
     "body": breadcrumb_nav("Which Course Do I Need?") + hero_solo(
         "Decision Guide",
         "Which Excavation Course Do I Need?",
@@ -1470,8 +1470,8 @@ PAGES.append({
 PAGES.append({
     "slug": "excavation-protective-systems",
     "active": None,
-    "title": "Excavation Protective Systems Explained | Sloping, Benching, Shoring & Shielding",
-    "description": "Plain-language guide to sloping, benching, shoring, shielding, trench boxes, timber and aluminum hydraulic shoring, tabulated data, and when a Registered Professional Engineer is required.",
+    "title": "Excavation Protective Systems Explained",
+    "description": "Plain-language guide to sloping, benching, shoring, shielding, trench boxes, tabulated data, and when a Registered Professional Engineer is required.",
     "body": breadcrumb_nav("Protective Systems") + hero_solo(
         "Protective Systems",
         "Excavation Protective Systems Explained",
@@ -1529,8 +1529,8 @@ PAGES.append({
 PAGES.append({
     "slug": "soil-classification-training",
     "active": None,
-    "title": "Soil Classification for Excavations | Stable Rock, Type A, B & C Explained",
-    "description": "How OSHA's soil classification system works: Stable Rock, Type A, Type B, Type C, visual and manual tests, water and vibration effects, and layered soil systems.",
+    "title": "Soil Classification Training for Excavations",
+    "description": "How OSHA's soil classification system works: Stable Rock, Types A-C, visual and manual tests, and water/vibration effects on stability.",
     "body": breadcrumb_nav("Soil Classification") + hero_solo(
         "Soil Classification",
         "Soil Classification for Excavations",
@@ -1584,7 +1584,7 @@ PAGES.append({
     "slug": "underground-utility-safety",
     "active": None,
     "title": "Underground Utility Safety & Call-Before-You-Dig | Excavation Training",
-    "description": "811 / call-before-you-dig practices, electric, gas, water, sewer, telecom, and fuel line hazards, employer coordination duties, and OSHA 1926.651(b) requirements.",
+    "description": "811 / call-before-you-dig practices, utility line hazards, employer coordination duties, and OSHA 1926.651(b) requirements.",
     "body": breadcrumb_nav("Underground Utility Safety") + hero_solo(
         "Underground Utilities",
         "Underground Utility Safety &amp; Call-Before-You-Dig",
@@ -1631,7 +1631,7 @@ PAGES.append({
     "slug": "excavation-emergency-planning",
     "active": None,
     "title": "Excavation Emergency & Rescue Planning | Cave-In Response",
-    "description": "Cave-in response, rescue planning, water accumulation, hazardous atmospheres, and why online training alone doesn't qualify a worker as an excavation rescue specialist.",
+    "description": "Cave-in response, rescue planning, water accumulation, and hazardous atmospheres. Why online training alone doesn't make a rescue specialist.",
     "body": breadcrumb_nav("Emergency Planning") + hero_solo(
         "Emergency Planning",
         "Excavation Emergency &amp; Rescue Planning",
@@ -1716,8 +1716,8 @@ PAGES.append({
 PAGES.append({
     "slug": "excavation-safety-vs-competent-person-training",
     "active": None,
-    "title": "Excavation Safety Training vs. Competent Person Training | Key Differences",
-    "description": "How Excavation, Trenching & Shoring Safety Training differs from Competent Person training: scope, audience, duration, cost, and what each does and doesn't authorize.",
+    "title": "Excavation Safety vs. Competent Person Training",
+    "description": "How Excavation Safety Training differs from Competent Person training: scope, audience, duration, cost, and what each authorizes.",
     "body": breadcrumb_nav("Safety vs. Competent Person Training") + hero_solo(
         "Course Comparison",
         "Excavation Safety Training vs. Competent Person Training",
@@ -1786,7 +1786,7 @@ PAGES.append({
 PAGES.append({
     "slug": "sloping-benching-shoring-shielding-explained",
     "active": None,
-    "title": "Sloping vs. Benching vs. Shoring vs. Shielding | Protective Systems Explained",
+    "title": "Sloping vs. Benching vs. Shoring vs. Shielding",
     "description": "The four main excavation protective system approaches, side by side, with when each is used and its main limitations.",
     "body": breadcrumb_nav("Sloping, Benching, Shoring & Shielding") + hero_solo(
         "Protective Systems Comparison",
@@ -1858,7 +1858,7 @@ PAGES.append({
 PAGES.append({
     "slug": "excavation-competent-person-requirements",
     "active": None,
-    "title": "Excavation Competent Person Requirements | Who Qualifies & What They Do",
+    "title": "Excavation Competent Person Requirements",
     "description": "OSHA's Competent Person requirements for excavation work: definition, authority, typical duties, and who can be designated.",
     "body": breadcrumb_nav("Competent Person Requirements") + hero_solo(
         "Competent Person",
@@ -1901,7 +1901,7 @@ PAGES.append({
 PAGES.append({
     "slug": "excavation-training-for-utility-crews",
     "active": None,
-    "title": "Excavation Training for Utility Crews | OSHA Subpart P for Utility Work",
+    "title": "Excavation Training for Utility Crews",
     "description": "How OSHA excavation and trenching requirements apply to utility crews installing or repairing underground electric, gas, water, sewer, and telecom lines.",
     "body": breadcrumb_nav("Utility Crew Training") + hero_solo(
         "Utility Crews",
@@ -1933,7 +1933,7 @@ PAGES.append({
 PAGES.append({
     "slug": "excavation-training-for-municipal-crews",
     "active": None,
-    "title": "Excavation Training for Municipal Crews | OSHA Subpart P for Public Works",
+    "title": "Excavation Training for Municipal Crews",
     "description": "How OSHA excavation and trenching requirements apply to municipal public works crews doing water main, sewer, and street utility work.",
     "body": breadcrumb_nav("Municipal Crew Training") + hero_solo(
         "Municipal Crews",
@@ -2309,8 +2309,8 @@ FAQ_BODY = """
 PAGES.append({
     "slug": "frequently-asked-questions",
     "active": "faq",
-    "title": "Excavation, Trenching & Shoring Training FAQ | OSHA Subpart P Requirements Explained",
-    "description": "45+ answers on OSHA excavation requirements, cave-in hazards, soil classification, protective systems, Competent Person duties, certificates, and course/certification details.",
+    "title": "Excavation, Trenching & Shoring Training FAQ",
+    "description": "45+ answers on OSHA excavation requirements, cave-in hazards, soil classification, protective systems, and Competent Person duties.",
     "body": FAQ_BODY,
     "extra_schema": breadcrumb_schema("FAQ", "/frequently-asked-questions/"),
 })
@@ -2319,7 +2319,8 @@ PAGES.append({
 # CHECKOUT (Stripe + HAZWOPER OSHA order API)
 # ---------------------------------------------------------------------------
 
-CHECKOUT_HEAD_EXTRA = """<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
+CHECKOUT_HEAD_EXTRA = """<meta name="robots" content="noindex, follow">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
 <link rel="stylesheet" href="../css/checkout.css">
 <script src="https://js.stripe.com/v3/"></script>
 <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>"""
@@ -2544,14 +2545,15 @@ PAGES.append({
     "extra_body_scripts": '<script src="../js/checkout.js"></script>',
     "main_class": "checkout-page-main",
     "include_main_js": False,
+    "noindex": True,
 })
 
 PAGES.append({
     "slug": "",
     "is_home": True,
     "active": "overview",
-    "title": "OSHA Excavation, Trenching & Shoring Training | Safety & Competent Person Courses (ExcavationTrenchingShoring.com)",
-    "description": "Two online OSHA excavation courses: Excavation, Trenching & Shoring Safety Training and Competent Person for Excavation, Trenching & Shoring. Aligned with 29 CFR 1926 Subpart P, self-paced, English & Spanish, instant certificate.",
+    "title": "OSHA Excavation, Trenching & Shoring Training Courses",
+    "description": "OSHA-aligned excavation training: Safety Training and Competent Person courses. Self-paced, English & Spanish, instant certificate. 29 CFR 1926 Subpart P.",
     "body": HOME_BODY.replace("COURSE_PICKER_TEASER", course_picker_widget(prefix="")),
     "extra_schema": HOME_SCHEMA,
 })
