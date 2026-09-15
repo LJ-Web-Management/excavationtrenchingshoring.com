@@ -87,6 +87,7 @@ function isMostlyStyled(text) {
 
 function isDividerLine(text) {
   const t = text.trim();
+  if (/^(-{3,}|\*{3,}|_{3,})$/.test(t)) return true;
   if (t.length < 5) return false;
   return /^[─-╿—–\-=_~*]+$/.test(t);
 }
@@ -112,6 +113,65 @@ function linkifyUrls(html) {
     /(https?:\/\/[^\s<]+)/g,
     '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
   );
+}
+
+// ---------------------------------------------------------------------------
+// Manual formatting shortcuts.
+//
+// Typed directly into the source .docx/.txt, these give the writer control
+// over formatting without needing real Word styling:
+//   **bold**              -> <strong>
+//   *italic*  or _italic_ -> <em>
+//   ## Heading            -> <h2>   (### -> <h3>)
+//   > quoted text         -> indented pull-quote / blockquote
+//   ((small print))       -> smaller caption-style text
+//   [space]  (own line)   -> extra vertical gap
+//   1. item / 2. item     -> numbered list
+// A line of repeated dashes/underscores/box-drawing characters (e.g. "---" or
+// "━━━━━━━━━━", already how AI drafts mark section breaks) becomes a real
+// horizontal-rule divider instead of being silently discarded.
+// ---------------------------------------------------------------------------
+
+function applyMarkdownEmphasis(html) {
+  html = html.replace(/\*\*([^\n*]+?)\*\*/g, "<strong>$1</strong>");
+  html = html.replace(/\*([^\n*]+?)\*/g, "<em>$1</em>");
+  html = html.replace(/(^|[^\w])_([^\n_]+?)_(?!\w)/g, "$1<em>$2</em>");
+  return html;
+}
+
+function formatInline(text) {
+  return linkifyUrls(applyMarkdownEmphasis(normalizeAndMarkBold(text)));
+}
+
+function headingShortcutMatch(text) {
+  const m = text.trim().match(/^(#{1,3})\s+(\S.*)$/);
+  if (!m) return null;
+  return { level: m[1].length >= 3 ? 3 : 2, text: m[2].trim() };
+}
+
+function isBlockquoteShortcut(text) {
+  return /^>\s?\S/.test(text.trim());
+}
+
+function stripBlockquote(text) {
+  return text.trim().replace(/^>\s?/, "");
+}
+
+function isSpacerShortcut(text) {
+  return /^\[space\]$/i.test(text.trim());
+}
+
+function captionShortcutMatch(text) {
+  const m = text.trim().match(/^\(\((.+)\)\)$/);
+  return m ? m[1].trim() : null;
+}
+
+function isOrderedListLine(text) {
+  return /^\d+[.)]\s+\S/.test(text.trim());
+}
+
+function stripOrderedMarker(text) {
+  return text.trim().replace(/^\d+[.)]\s+/, "");
 }
 
 // ---------------------------------------------------------------------------
@@ -176,6 +236,7 @@ function extractTitle(blocks, fallbackTitle) {
 function buildBodyHtml(blocks) {
   const output = [];
   let bulletBuffer = [];
+  let orderedBuffer = [];
   let sourcesMode = false;
   let sourcesBuffer = [];
   let pendingSourceName = null;
@@ -183,11 +244,18 @@ function buildBodyHtml(blocks) {
   function flushBullets() {
     if (bulletBuffer.length) {
       output.push(
-        "<ul>" +
-          bulletBuffer.map((t) => "<li>" + linkifyUrls(normalizeAndMarkBold(t)) + "</li>").join("") +
-          "</ul>"
+        "<ul>" + bulletBuffer.map((t) => "<li>" + formatInline(t) + "</li>").join("") + "</ul>"
       );
       bulletBuffer = [];
+    }
+  }
+
+  function flushOrdered() {
+    if (orderedBuffer.length) {
+      output.push(
+        "<ol>" + orderedBuffer.map((t) => "<li>" + formatInline(t) + "</li>").join("") + "</ol>"
+      );
+      orderedBuffer = [];
     }
   }
 
@@ -218,6 +286,7 @@ function buildBodyHtml(blocks) {
   for (const block of blocks) {
     if (block.type === "raw" || block.type === "heading") {
       flushBullets();
+      flushOrdered();
       flushSources();
       sourcesMode = false;
       output.push(block.html);
@@ -229,6 +298,8 @@ function buildBodyHtml(blocks) {
 
     if (isDividerLine(text)) {
       flushBullets();
+      flushOrdered();
+      output.push('<hr class="post-divider">');
       continue;
     }
 
@@ -240,14 +311,27 @@ function buildBodyHtml(blocks) {
 
     if (isSourcesHeading(text)) {
       flushBullets();
+      flushOrdered();
       flushSources();
       output.push("<h2>" + escapeHtml(plainNormalize(text)) + "</h2>");
       sourcesMode = true;
       continue;
     }
 
+    const heading = headingShortcutMatch(text);
+    if (heading) {
+      flushBullets();
+      flushOrdered();
+      flushSources();
+      sourcesMode = false;
+      const tag = "h" + heading.level;
+      output.push("<" + tag + ">" + formatInline(heading.text) + "</" + tag + ">");
+      continue;
+    }
+
     if (isMostlyStyled(text)) {
       flushBullets();
+      flushOrdered();
       flushSources();
       sourcesMode = false;
       output.push("<h2>" + escapeHtml(plainNormalize(text)) + "</h2>");
@@ -262,16 +346,47 @@ function buildBodyHtml(blocks) {
       continue;
     }
 
+    if (isSpacerShortcut(text)) {
+      flushBullets();
+      flushOrdered();
+      output.push('<div class="post-spacer" aria-hidden="true"></div>');
+      continue;
+    }
+
+    const caption = captionShortcutMatch(text);
+    if (caption !== null) {
+      flushBullets();
+      flushOrdered();
+      output.push('<p class="post-caption">' + formatInline(caption) + "</p>");
+      continue;
+    }
+
+    if (isBlockquoteShortcut(text)) {
+      flushBullets();
+      flushOrdered();
+      output.push("<blockquote><p>" + formatInline(stripBlockquote(text)) + "</p></blockquote>");
+      continue;
+    }
+
+    if (isOrderedListLine(text)) {
+      flushBullets();
+      orderedBuffer.push(stripOrderedMarker(text));
+      continue;
+    }
+
     if (isBulletLine(text)) {
+      flushOrdered();
       bulletBuffer.push(stripBullet(text));
       continue;
     }
 
     flushBullets();
-    output.push("<p>" + linkifyUrls(normalizeAndMarkBold(text)) + "</p>");
+    flushOrdered();
+    output.push("<p>" + formatInline(text) + "</p>");
   }
 
   flushBullets();
+  flushOrdered();
   flushSources();
 
   return output.join("\n");
