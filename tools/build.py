@@ -8,6 +8,7 @@ into place (e.g. PAGES entry slug="about" -> about/index.html). Hosting stays
 100% static -- this script just keeps the header/nav/footer markup from being
 hand-duplicated across ~25 pages.
 """
+import json
 import os
 import re
 
@@ -398,6 +399,19 @@ def write_sitemap(pages):
         urls.append(
             f"  <url>\n    <loc>https://excavationtrenchingshoring.com{path}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>{priority}</priority>\n  </url>"
         )
+
+    urls.append(
+        "  <url>\n    <loc>https://excavationtrenchingshoring.com/blog/</loc>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>"
+    )
+    blog_posts_path = os.path.join(ROOT, "blog", "posts.json")
+    if os.path.exists(blog_posts_path):
+        with open(blog_posts_path, encoding="utf-8") as f:
+            blog_posts = json.load(f)
+        for post in blog_posts:
+            urls.append(
+                f"  <url>\n    <loc>https://excavationtrenchingshoring.com/blog/posts/{post['slug']}.html</loc>\n    <lastmod>{post['date']}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>"
+            )
+
     xml = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

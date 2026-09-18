@@ -427,6 +427,40 @@ function savePosts(posts) {
   fs.writeFileSync(POSTS_JSON, JSON.stringify(posts, null, 2) + "\n");
 }
 
+// Keeps the site-root sitemap.xml (built by tools/build.py, which has no
+// knowledge of the blog) in sync with posts.json - strips any previously
+// written /blog/ entries and re-adds the blog index plus one entry per post.
+function updateSitemap(posts) {
+  const SITEMAP_PATH = path.join(ROOT, "..", "sitemap.xml");
+  if (!fs.existsSync(SITEMAP_PATH)) return;
+
+  const xml = fs.readFileSync(SITEMAP_PATH, "utf8");
+  // Each <url>...</url> block is matched individually (the lazy quantifier
+  // stops at the nearest </url>, so blocks can't bleed into each other),
+  // then any pre-existing /blog/ blocks are dropped and replaced below.
+  const urlBlocks = xml.match(/ {2}<url>\n(?:.*\n)*? {2}<\/url>\n/g) || [];
+  const nonBlogBlocks = urlBlocks.filter((block) => !block.includes(BLOG_URL));
+
+  const blogBlocks = [
+    `  <url>\n    <loc>${BLOG_URL}/</loc>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`,
+  ];
+  for (const post of posts) {
+    blogBlocks.push(
+      `  <url>\n    <loc>${BLOG_URL}/posts/${post.slug}.html</loc>\n    <lastmod>${post.date}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`
+    );
+  }
+
+  const newXml =
+    '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    nonBlogBlocks.join("") +
+    blogBlocks.join("") +
+    "</urlset>\n";
+
+  fs.writeFileSync(SITEMAP_PATH, newXml);
+  console.log("updated sitemap.xml with " + posts.length + " blog post(s)");
+}
+
 function uniqueSlug(baseSlug, existingSlugs) {
   let slug = baseSlug;
   let n = 2;
@@ -901,6 +935,7 @@ function main() {
     }, Promise.resolve())
     .then(() => {
       savePosts(posts);
+      updateSitemap(posts);
       console.log("Done. " + files.length + " post(s) published.");
     })
     .catch((err) => {

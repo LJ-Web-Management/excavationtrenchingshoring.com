@@ -130,4 +130,39 @@
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://excavationtrenchingshoring.com/blog/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://excavationtrenchingshoring.com/blog/posts/when-rain-changes-a-trench-inspection-decisions-before-re-entry.html</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://excavationtrenchingshoring.com/blog/posts/spoil-pile-placement-and-trench-safety-what-supervisors-need-to-control.html</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://excavationtrenchingshoring.com/blog/posts/trench-access-and-egress-planning-what-supervisors-need-to-control-before-entry.html</loc>
+    <lastmod>2026-09-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://excavationtrenchingshoring.com/blog/posts/underground-utility-hazards-in-excavation-training-crews-before-the-first-cut.html</loc>
+    <lastmod>2026-09-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://excavationtrenchingshoring.com/blog/posts/choosing-the-right-protective-system-for-trenching-sloping-benching-shoring-and-shielding.html</loc>
+    <lastmod>2026-09-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
 </urlset>
