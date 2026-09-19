@@ -186,11 +186,6 @@ HOME_BODY = """
           <span class="accred-card-detail">Better Business Bureau profile for HAZWOPER OSHA Training, LLC</span>
           <span class="accred-card-link">View BBB profile &rarr;</span>
         </a>
-        <a class="accred-card" href="https://www.fmcsa.dot.gov/" target="_blank" rel="noopener">
-          <span class="accred-card-name">FMCSA Approved Provider</span>
-          <span class="accred-card-detail">Federal Motor Carrier Safety Administration</span>
-          <span class="accred-card-link">Visit FMCSA.gov &rarr;</span>
-        </a>
       </div>
 
       <div class="accred-cta">

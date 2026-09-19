@@ -254,9 +254,6 @@ def render_footer(*, prefix, include_main_js=True):
         <a href="https://www.bbb.org/us/ca/los-angeles/profile/online-education/hazwoper-osha-training-1216-1424720" target="_blank" rel="noopener" aria-label="BBB A+ Rating">
           <img src="{p}images/badge-bbb.webp" alt="BBB A+ Rating" loading="lazy" width="200" height="119">
         </a>
-        <a href="https://www.fmcsa.dot.gov/" target="_blank" rel="noopener" aria-label="FMCSA Approved Provider">
-          <img src="{p}images/badge-fmcsa.webp" alt="FMCSA Approved Provider" loading="lazy" width="200" height="119">
-        </a>
       </div>
     </div>
 
