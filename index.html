@@ -2,13 +2,23 @@
 <html lang="en">
 <head>
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-4965R39GCF"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-4965R39GCF');
+
+  // gtag() calls above just queue into dataLayer, so it's safe to fetch the
+  // actual gtag.js bundle after load instead of blocking the critical path -
+  // it competes for the same limited bandwidth as the hero image/fonts/CSS
+  // on a slow connection otherwise. Same trade-off Tawk.to already makes below.
+  window.addEventListener('load', function(){
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-4965R39GCF';
+    document.head.appendChild(s);
+  });
 </script>
 <script src="https://analytics.ahrefs.com/analytics.js" data-key="6BpOTc7DCKdhopmJKKlYcQ" async></script>
 <meta charset="UTF-8">
@@ -35,7 +45,11 @@
 <meta name="twitter:image:alt" content="ExcavationTrenchingShoring.com logo">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="images/hero-excavator-sunset.webp" as="image" fetchpriority="high">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="css/styles.css">
 <script type="application/ld+json">
 {
@@ -127,7 +141,7 @@
 <header class="site-header">
   <div class="container header-inner">
     <a href="index.html#top" class="logo">
-      <img src="images/ets-logo.png" alt="ExcavationTrenchingShoring.com" class="logo-icon">
+      <img src="images/ets-logo-icon.webp" alt="" width="220" height="266" class="logo-icon">
       <span class="logo-text">
         <span class="logo-mark">ExcavationTrenchingShoring.com</span>
         <span class="logo-sub">Excavation Trenching &amp; Shoring Training</span>
@@ -226,7 +240,7 @@
 
       <div class="hero-card" aria-hidden="false">
         <div class="hero-card-badge">2 Courses, 1 Compliance Path</div>
-        <h3>Course Snapshot</h3>
+        <h2>Course Snapshot</h2>
         <ul class="hero-card-courses">
           <li>
             <a class="hero-card-course" href="excavation-trenching-shoring-safety-training/">
@@ -385,7 +399,7 @@
           </ul>
           <div class="course-card-footer">
             <span class="course-card-price">$59.99 <span>/ seat</span></span>
-            <a href="excavation-trenching-shoring-safety-training/" class="btn btn-primary" data-course="safety">Course Details</a>
+            <a href="excavation-trenching-shoring-safety-training/" class="btn btn-primary" data-course="safety" aria-label="Excavation, Trenching &amp; Shoring Safety Training course details">Course Details</a>
           </div>
         </div>
 
@@ -406,7 +420,7 @@
           </ul>
           <div class="course-card-footer">
             <span class="course-card-price">$159.99 <span>/ seat</span></span>
-            <a href="competent-person-excavation-trenching-shoring-training/" class="btn btn-primary" data-course="competent">Course Details</a>
+            <a href="competent-person-excavation-trenching-shoring-training/" class="btn btn-primary" data-course="competent" aria-label="Competent Person for Excavation, Trenching &amp; Shoring Training course details">Course Details</a>
           </div>
         </div>
       </div>
@@ -475,13 +489,13 @@
         <div class="course-picker-result" data-result="safety">
           <h3>Recommended: Excavation, Trenching &amp; Shoring Safety Training</h3>
           <p>You work in, near, or around excavations and trenches. This 3-hour course covers hazard recognition, soil and protective system basics, and safe access/egress - the awareness you need to work safely and know when to notify the Competent Person.</p>
-          <a href="excavation-trenching-shoring-safety-training/" class="btn btn-primary">Course Details</a>
+          <a href="excavation-trenching-shoring-safety-training/" class="btn btn-primary" aria-label="Excavation, Trenching &amp; Shoring Safety Training course details">Course Details</a>
           <a href="#pricing" class="btn btn-outline-light">Enroll - $59.99</a>
         </div>
         <div class="course-picker-result" data-result="competent" hidden>
           <h3>Recommended: Competent Person for Excavation, Trenching &amp; Shoring Training</h3>
           <p>You inspect, classify soil, select protective systems, or supervise excavation work. This 8-hour course covers everything OSHA expects a Competent Person to know - but remember, your employer must formally designate you before you hold that authority on site.</p>
-          <a href="competent-person-excavation-trenching-shoring-training/" class="btn btn-primary">Course Details</a>
+          <a href="competent-person-excavation-trenching-shoring-training/" class="btn btn-primary" aria-label="Competent Person for Excavation, Trenching &amp; Shoring Training course details">Course Details</a>
           <a href="#pricing" class="btn btn-outline-light">Enroll - $159.99</a>
         </div>
         <div class="course-picker-result" data-result="both" hidden>
@@ -492,19 +506,19 @@
         <div class="course-picker-result" data-result="inspect" hidden>
           <h3>Recommended: Competent Person for Excavation, Trenching &amp; Shoring Training</h3>
           <p>Daily inspection duties fall to the Competent Person role. This 8-hour course covers required inspection timing, documentation, and how to respond when conditions change.</p>
-          <a href="competent-person-excavation-trenching-shoring-training/" class="btn btn-primary">Course Details</a>
+          <a href="competent-person-excavation-trenching-shoring-training/" class="btn btn-primary" aria-label="Competent Person for Excavation, Trenching &amp; Shoring Training course details">Course Details</a>
           <a href="#pricing" class="btn btn-outline-light">Enroll - $159.99</a>
         </div>
         <div class="course-picker-result" data-result="soil" hidden>
           <h3>Recommended: Competent Person for Excavation, Trenching &amp; Shoring Training</h3>
           <p>Soil classification is a Competent Person responsibility under OSHA Appendix A. This course covers visual and manual test methods for Stable Rock, Type A, Type B, and Type C soils. See also our <a href="soil-classification-training/">Soil Classification page</a>.</p>
-          <a href="competent-person-excavation-trenching-shoring-training/" class="btn btn-primary">Course Details</a>
+          <a href="competent-person-excavation-trenching-shoring-training/" class="btn btn-primary" aria-label="Competent Person for Excavation, Trenching &amp; Shoring Training course details">Course Details</a>
           <a href="#pricing" class="btn btn-outline-light">Enroll - $159.99</a>
         </div>
         <div class="course-picker-result" data-result="systems" hidden>
           <h3>Recommended: Competent Person for Excavation, Trenching &amp; Shoring Training</h3>
           <p>Selecting and evaluating sloping, benching, shielding, and shoring systems is a Competent Person duty. See also our <a href="excavation-protective-systems/">Protective Systems page</a> for how tabulated data and engineering requirements fit in.</p>
-          <a href="competent-person-excavation-trenching-shoring-training/" class="btn btn-primary">Course Details</a>
+          <a href="competent-person-excavation-trenching-shoring-training/" class="btn btn-primary" aria-label="Competent Person for Excavation, Trenching &amp; Shoring Training course details">Course Details</a>
           <a href="#pricing" class="btn btn-outline-light">Enroll - $159.99</a>
         </div>
       </div>
@@ -886,7 +900,7 @@
 
     <div class="footer-col footer-col-brand">
       <a href="index.html#top" class="logo footer-logo">
-        <img src="images/ets-logo.png" alt="ExcavationTrenchingShoring.com" class="logo-icon logo-icon-footer">
+        <img src="images/ets-logo-icon.webp" alt="" width="220" height="266" class="logo-icon logo-icon-footer">
         <span class="logo-text">
           <span class="logo-mark logo-mark-footer">ExcavationTrenchingShoring.com</span>
           <span class="logo-sub logo-sub-footer">Excavation Trenching &amp; Shoring Training</span>
@@ -907,7 +921,7 @@
     </div>
 
     <div class="footer-col footer-col-links">
-      <h4 class="footer-col-heading">Site</h4>
+      <h3 class="footer-col-heading">Site</h3>
       <ul class="footer-link-list">
         <li><a href="about/">About</a></li>
         <li><a href="index.html#courses">Course Catalog</a></li>
@@ -929,7 +943,7 @@
     </div>
 
     <div class="footer-col footer-col-contact">
-      <h4 class="footer-col-heading">Contact Us</h4>
+      <h3 class="footer-col-heading">Contact Us</h3>
       <p class="footer-contact-lead">Get in Touch</p>
       <p class="footer-contact-sub">Have questions? We're here to help. Reach out to us anytime.</p>
 
@@ -969,7 +983,7 @@
   </div>
   <div class="container footer-grid footer-grid-legal">
     <div class="footer-col">
-      <h4 class="footer-col-heading">Policies</h4>
+      <h3 class="footer-col-heading">Policies</h3>
       <ul class="footer-link-list footer-link-list-inline">
         <li><a href="privacy-policy/">Privacy Policy</a></li>
         <li><a href="refund-policy/">Refund Policy</a></li>

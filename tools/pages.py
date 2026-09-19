@@ -53,13 +53,13 @@ def course_picker_widget(full=False, prefix="../"):
         <div class="course-picker-result" data-result="safety">
           <h3>Recommended: Excavation, Trenching &amp; Shoring Safety Training</h3>
           <p>You work in, near, or around excavations and trenches. This 3-hour course covers hazard recognition, soil and protective system basics, and safe access/egress - the awareness you need to work safely and know when to notify the Competent Person.</p>
-          <a href="{prefix}excavation-trenching-shoring-safety-training/" class="btn btn-primary">Course Details</a>
+          <a href="{prefix}excavation-trenching-shoring-safety-training/" class="btn btn-primary" aria-label="Excavation, Trenching &amp; Shoring Safety Training course details">Course Details</a>
           <a href="{pricing_href}" class="btn btn-outline-light">Enroll - $59.99</a>
         </div>
         <div class="course-picker-result" data-result="competent" hidden>
           <h3>Recommended: Competent Person for Excavation, Trenching &amp; Shoring Training</h3>
           <p>You inspect, classify soil, select protective systems, or supervise excavation work. This 8-hour course covers everything OSHA expects a Competent Person to know - but remember, your employer must formally designate you before you hold that authority on site.</p>
-          <a href="{prefix}competent-person-excavation-trenching-shoring-training/" class="btn btn-primary">Course Details</a>
+          <a href="{prefix}competent-person-excavation-trenching-shoring-training/" class="btn btn-primary" aria-label="Competent Person for Excavation, Trenching &amp; Shoring Training course details">Course Details</a>
           <a href="{pricing_href}" class="btn btn-outline-light">Enroll - $159.99</a>
         </div>
         <div class="course-picker-result" data-result="both" hidden>
@@ -70,19 +70,19 @@ def course_picker_widget(full=False, prefix="../"):
         <div class="course-picker-result" data-result="inspect" hidden>
           <h3>Recommended: Competent Person for Excavation, Trenching &amp; Shoring Training</h3>
           <p>Daily inspection duties fall to the Competent Person role. This 8-hour course covers required inspection timing, documentation, and how to respond when conditions change.</p>
-          <a href="{prefix}competent-person-excavation-trenching-shoring-training/" class="btn btn-primary">Course Details</a>
+          <a href="{prefix}competent-person-excavation-trenching-shoring-training/" class="btn btn-primary" aria-label="Competent Person for Excavation, Trenching &amp; Shoring Training course details">Course Details</a>
           <a href="{pricing_href}" class="btn btn-outline-light">Enroll - $159.99</a>
         </div>
         <div class="course-picker-result" data-result="soil" hidden>
           <h3>Recommended: Competent Person for Excavation, Trenching &amp; Shoring Training</h3>
           <p>Soil classification is a Competent Person responsibility under OSHA Appendix A. This course covers visual and manual test methods for Stable Rock, Type A, Type B, and Type C soils. See also our <a href="{prefix}soil-classification-training/">Soil Classification page</a>.</p>
-          <a href="{prefix}competent-person-excavation-trenching-shoring-training/" class="btn btn-primary">Course Details</a>
+          <a href="{prefix}competent-person-excavation-trenching-shoring-training/" class="btn btn-primary" aria-label="Competent Person for Excavation, Trenching &amp; Shoring Training course details">Course Details</a>
           <a href="{pricing_href}" class="btn btn-outline-light">Enroll - $159.99</a>
         </div>
         <div class="course-picker-result" data-result="systems" hidden>
           <h3>Recommended: Competent Person for Excavation, Trenching &amp; Shoring Training</h3>
           <p>Selecting and evaluating sloping, benching, shielding, and shoring systems is a Competent Person duty. See also our <a href="{prefix}excavation-protective-systems/">Protective Systems page</a> for how tabulated data and engineering requirements fit in.</p>
-          <a href="{prefix}competent-person-excavation-trenching-shoring-training/" class="btn btn-primary">Course Details</a>
+          <a href="{prefix}competent-person-excavation-trenching-shoring-training/" class="btn btn-primary" aria-label="Competent Person for Excavation, Trenching &amp; Shoring Training course details">Course Details</a>
           <a href="{pricing_href}" class="btn btn-outline-light">Enroll - $159.99</a>
         </div>
       </div>"""
@@ -124,7 +124,7 @@ HOME_BODY = """
 
       <div class="hero-card" aria-hidden="false">
         <div class="hero-card-badge">2 Courses, 1 Compliance Path</div>
-        <h3>Course Snapshot</h3>
+        <h2>Course Snapshot</h2>
         <ul class="hero-card-courses">
           <li>
             <a class="hero-card-course" href="excavation-trenching-shoring-safety-training/">
@@ -209,36 +209,48 @@ HOME_BODY = """
         </p>
       </div>
 
-      <div class="grid-3 feature-grid">
-        <div class="feature-card">
-          <div class="feature-icon">&#9935;&#65039;</div>
-          <h3>Every Role, Covered Separately</h3>
-          <p>A crew-level safety course and a dedicated Competent Person track, so each role gets the depth it actually needs.</p>
+      <div class="panel-list">
+        <div class="panel-row">
+          <span class="panel-row-icon">&#9935;&#65039;</span>
+          <div>
+            <h3>Every Role, Covered Separately</h3>
+            <p>A crew-level safety course and a dedicated Competent Person track, so each role gets the depth it actually needs.</p>
+          </div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">&#128737;&#65039;</div>
-          <h3>Reduce Cave-Ins &amp; Violations</h3>
-          <p>Understand soil classification, protective systems, and daily inspection duties so your crew and your paperwork hold up if OSHA ever shows up.</p>
+        <div class="panel-row">
+          <span class="panel-row-icon">&#128737;&#65039;</span>
+          <div>
+            <h3>Reduce Cave-Ins &amp; Violations</h3>
+            <p>Understand soil classification, protective systems, and daily inspection duties so your crew and your paperwork hold up if OSHA ever shows up.</p>
+          </div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">&#128241;</div>
-          <h3>Train on Any Schedule</h3>
-          <p>Self-paced, mobile-friendly lessons your staff can complete between shifts, on any device.</p>
+        <div class="panel-row">
+          <span class="panel-row-icon">&#128241;</span>
+          <div>
+            <h3>Train on Any Schedule</h3>
+            <p>Self-paced, mobile-friendly lessons your staff can complete between shifts, on any device.</p>
+          </div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">&#128483;&#65039;</div>
-          <h3>English &amp; Spanish</h3>
-          <p>Course content is available in both languages, suited to mixed-language crews and project teams.</p>
+        <div class="panel-row">
+          <span class="panel-row-icon">&#128483;&#65039;</span>
+          <div>
+            <h3>English &amp; Spanish</h3>
+            <p>Course content is available in both languages, suited to mixed-language crews and project teams.</p>
+          </div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">&#128196;</div>
-          <h3>Instant Certification</h3>
-          <p>A certificate of completion is issued immediately after each course, ready for your compliance files.</p>
+        <div class="panel-row">
+          <span class="panel-row-icon">&#128196;</span>
+          <div>
+            <h3>Instant Certification</h3>
+            <p>A certificate of completion is issued immediately after each course, ready for your compliance files.</p>
+          </div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">&#128679;</div>
-          <h3>Built for Real Jobsites</h3>
-          <p>Scenarios drawn from utility trenches, pipeline work, and foundation excavations, not generic classroom theory.</p>
+        <div class="panel-row">
+          <span class="panel-row-icon">&#128679;</span>
+          <div>
+            <h3>Built for Real Jobsites</h3>
+            <p>Scenarios drawn from utility trenches, pipeline work, and foundation excavations, not generic classroom theory.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -271,7 +283,7 @@ HOME_BODY = """
           </ul>
           <div class="course-card-footer">
             <span class="course-card-price">$59.99 <span>/ seat</span></span>
-            <a href="excavation-trenching-shoring-safety-training/" class="btn btn-primary" data-course="safety">Course Details</a>
+            <a href="excavation-trenching-shoring-safety-training/" class="btn btn-primary" data-course="safety" aria-label="Excavation, Trenching &amp; Shoring Safety Training course details">Course Details</a>
           </div>
         </div>
 
@@ -292,7 +304,7 @@ HOME_BODY = """
           </ul>
           <div class="course-card-footer">
             <span class="course-card-price">$159.99 <span>/ seat</span></span>
-            <a href="competent-person-excavation-trenching-shoring-training/" class="btn btn-primary" data-course="competent">Course Details</a>
+            <a href="competent-person-excavation-trenching-shoring-training/" class="btn btn-primary" data-course="competent" aria-label="Competent Person for Excavation, Trenching &amp; Shoring Training course details">Course Details</a>
           </div>
         </div>
       </div>
@@ -462,7 +474,7 @@ HOME_BODY = """
         <p class="eyebrow">Who It's For</p>
         <h2>Built for Everyone Who Works Around Excavations</h2>
       </div>
-      <div class="grid-4 audience-grid">
+      <div class="tag-row">
         <div class="audience-card">Excavation &amp; Trenching Crews</div>
         <div class="audience-card">Equipment Operators</div>
         <div class="audience-card">Competent Persons &amp; Foremen</div>
@@ -489,7 +501,7 @@ HOME_BODY = """
           assessments, and employer authorization.
         </p>
       </div>
-      <div class="grid-4 audience-grid employer-grid">
+      <div class="tag-row employer-grid">
         <div class="audience-card">Site-specific hazard assessment</div>
         <div class="audience-card">Competent Person designation</div>
         <div class="audience-card">Daily inspection documentation</div>
