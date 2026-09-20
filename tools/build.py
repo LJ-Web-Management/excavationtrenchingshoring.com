@@ -276,6 +276,7 @@ def render_footer(*, prefix, include_main_js=True):
       <ul class="footer-link-list">
         <li><a href="{p}about/">About</a></li>
         <li><a href="{p}index.html#courses">Course Catalog</a></li>
+        <li><a href="{p}checkout/">Checkout</a></li>
         <li><a href="{p}index.html#accreditations">Certifications &amp; Accreditations</a></li>
         <li><a href="{p}credential-transparency/">Credential Transparency</a></li>
         <li><a href="{p}osha-excavation-standards/">OSHA Excavation Standards</a></li>

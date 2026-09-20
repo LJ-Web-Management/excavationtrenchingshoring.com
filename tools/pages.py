@@ -759,7 +759,6 @@ HOME_SCHEMA = """<script type="application/ld+json">
   "timeRequired": "PT3H",
   "inLanguage": ["en", "es"],
   "educationalCredentialAwarded": "Certificate of Completion",
-  "occupationalCategory": "Construction and Extraction Occupations",
   "hasCourseInstance": {
     "@type": "CourseInstance",
     "courseMode": "online",
@@ -779,7 +778,6 @@ HOME_SCHEMA = """<script type="application/ld+json">
   "timeRequired": "PT8H",
   "inLanguage": ["en", "es"],
   "educationalCredentialAwarded": "Certificate of Completion",
-  "occupationalCategory": "Construction Managers; Occupational Health and Safety Specialists",
   "hasCourseInstance": {
     "@type": "CourseInstance",
     "courseMode": "online",
@@ -855,7 +853,7 @@ PAGES.append({
 PAGES.append({
     "slug": "osha-excavation-standards",
     "active": "accreditations",
-    "title": "OSHA Excavation Standards | 29 CFR 1926 Subpart P Explained",
+    "title": "OSHA Excavation Standards | 29 CFR 1926 Subpart P",
     "description": "Plain-language summaries and official links to 29 CFR 1926 Subpart P, 1926.650, 1926.651, 1926.652, Appendices A-C, and OSHA's Trenching and Excavation eTool.",
     "body": breadcrumb_nav("OSHA Excavation Standards") + hero_solo(
         "Regulatory Reference",
@@ -974,7 +972,7 @@ PAGES.append({
 PAGES.append({
     "slug": "instructors-and-training-provider",
     "active": None,
-    "title": "Instructors & Training Provider | ExcavationTrenchingShoring.com",
+    "title": "Instructors & Training Provider | Excavation Training",
     "description": "Meet the training provider and lead instructor behind ExcavationTrenchingShoring.com's excavation, trenching, and shoring courses.",
     "body": breadcrumb_nav("Instructors & Training Provider") + hero_solo(
         "Instructors &amp; Training Provider",
@@ -1237,7 +1235,6 @@ SAFETY_SCHEMA = """<script type="application/ld+json">
   "inLanguage": ["en", "es"],
   "educationalCredentialAwarded": "Certificate of Completion",
   "teaches": "Excavation and trenching hazard recognition, soil and protective system basics, safe access/egress, and underground utility awareness",
-  "occupationalCategory": "Construction and Extraction Occupations",
   "hasCourseInstance": {
     "@type": "CourseInstance",
     "courseMode": "online",
@@ -1250,7 +1247,7 @@ SAFETY_SCHEMA = """<script type="application/ld+json">
 PAGES.append({
     "slug": "excavation-trenching-shoring-safety-training",
     "active": "courses",
-    "title": "Excavation, Trenching & Shoring Safety Training | 3-Hour Online Course",
+    "title": "Excavation, Trenching & Shoring Safety Training Course",
     "description": "3-hour, OSHA-aligned crew-level excavation safety course. Certificate of completion, English & Spanish, $59.99/seat.",
     "body": SAFETY_BODY,
     "extra_schema": SAFETY_SCHEMA,
@@ -1381,7 +1378,6 @@ COMPETENT_SCHEMA = """<script type="application/ld+json">
   "inLanguage": ["en", "es"],
   "educationalCredentialAwarded": "Certificate of Completion",
   "teaches": "Soil classification, protective system selection, daily inspection duties, and excavation safety program development",
-  "occupationalCategory": "Construction Managers; Occupational Health and Safety Specialists",
   "hasCourseInstance": {
     "@type": "CourseInstance",
     "courseMode": "online",
@@ -1590,7 +1586,7 @@ PAGES.append({
 PAGES.append({
     "slug": "underground-utility-safety",
     "active": None,
-    "title": "Underground Utility Safety & Call-Before-You-Dig | Excavation Training",
+    "title": "Underground Utility Safety & Call-Before-You-Dig",
     "description": "811 / call-before-you-dig practices, utility line hazards, employer coordination duties, and OSHA 1926.651(b) requirements.",
     "body": breadcrumb_nav("Underground Utility Safety") + hero_solo(
         "Underground Utilities",
@@ -1826,7 +1822,7 @@ PAGES.append({
 PAGES.append({
     "slug": "osha-subpart-p-training-guide",
     "active": None,
-    "title": "OSHA Subpart P Training Guide | 29 CFR 1926 Subpart P for Employers",
+    "title": "OSHA Subpart P Training Guide | 29 CFR 1926 Subpart P",
     "description": "A practical guide to training your workforce to OSHA 29 CFR 1926 Subpart P: what the standard requires, who needs what training, and how to document it.",
     "body": breadcrumb_nav("Subpart P Training Guide") + hero_solo(
         "Employer Guide",
