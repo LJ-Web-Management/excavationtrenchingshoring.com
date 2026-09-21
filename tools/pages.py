@@ -1,7 +1,43 @@
 # Page content for build.py. Each entry in PAGES becomes one static HTML file.
 # Run `python3 tools/build.py` from the repo root to regenerate.
 
+import json
+import re
+
 PAGES = []
+
+
+def faqpage_schema(html):
+    """Extract every .faq-item Q&A from a rendered body string and emit
+    FAQPage JSON-LD, so the schema can never drift out of sync with the
+    visible questions/answers."""
+    items = re.findall(
+        r'<button class="faq-question"[^>]*>(.*?)<span class="faq-icon">.*?'
+        r'<div class="faq-answer"><p>(.*?)</p></div></div>',
+        html,
+        re.S,
+    )
+    if not items:
+        return ""
+    tag_re = re.compile(r"<[^>]+>")
+    entities = ("&amp;", "&"), ("&#39;", "'"), ("&quot;", '"')
+
+    def clean(text):
+        text = tag_re.sub("", text).strip()
+        for enc, dec in entities:
+            text = text.replace(enc, dec)
+        return text
+
+    main_entity = [
+        {
+            "@type": "Question",
+            "name": clean(q),
+            "acceptedAnswer": {"@type": "Answer", "text": clean(a)},
+        }
+        for q, a in items
+    ]
+    payload = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": main_entity}
+    return '<script type="application/ld+json">\n%s\n</script>' % json.dumps(payload)
 
 
 def breadcrumb_schema(name, path):
@@ -864,6 +900,9 @@ PAGES.append({
     <div class="container content-prose">
       <p>29 CFR 1926 Subpart P is OSHA's construction standard for excavations. The summaries below are for orientation only - always confirm current requirements against OSHA's official published text, linked in each section.</p>
 
+      <h2>OSHA Standards for Trenching</h2>
+      <p>Trenching doesn't have its own separate rulebook - a trench is legally just a narrow excavation, so OSHA's standards for trenching are the same 29 CFR 1926 Subpart P sections covered on this page: soil classification (Appendix A), the four protective-system options and when each is required (1926.652, Appendix B, Appendix C), safe access and egress within 25 feet of lateral travel for excavations 4 feet or deeper, spoil and equipment setback of at least 2 feet from the edge, and daily Competent Person inspections. Trenching gets called out specifically in guidance and enforcement because its narrow geometry raises cave-in risk, not because a different standard applies.</p>
+
       <h2>Subpart P - Excavations (Overview)</h2>
       <p>The umbrella standard covering all excavation and trenching work in construction, including soil classification, protective systems, access and egress, and inspection duties.</p>
       <p><a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1926/1926SubpartP" target="_blank" rel="noopener">Read 29 CFR 1926 Subpart P on osha.gov &rarr;</a></p>
@@ -878,6 +917,11 @@ PAGES.append({
 
       <h2>1926.652 - Requirements for Protective Systems</h2>
       <p>Requires a protective system for excavations 5 feet or deeper (unless the excavation is entirely in stable rock or a Competent Person determines no hazard exists), and sets the design criteria for sloping, benching, shoring, and shielding systems, including when a registered professional engineer's design is required.</p>
+      <p>The operative text of 1926.652(a)(1), quoted directly from the standard:</p>
+      <div class="callout-box">
+        <p>"Each employee in an excavation shall be protected from cave-ins by an adequate protective system designed in accordance with paragraph (b) or (c) of this section except when: (i) Excavations are made entirely in stable rock; or (ii) Excavations are less than 5 feet (1.52 m) in depth and examination of the ground by a competent person provides no indication of a potential cave-in."</p>
+      </div>
+      <p>In plain terms: unless a competent person determines otherwise, a protective system must be provided for excavations. The only exceptions are excavations made entirely in stable rock, or excavations under 5 feet deep where the competent person's examination finds no indication of a potential cave-in - and that determination is the Competent Person's call to make on site, not a default assumption.</p>
       <p><a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1926/1926.652" target="_blank" rel="noopener">Read 1926.652 on osha.gov &rarr;</a></p>
 
       <h2>Appendix A - Soil Classification</h2>
@@ -896,6 +940,9 @@ PAGES.append({
       <h2>OSHA Competent Person Guidance</h2>
       <p>OSHA's eTool section specifically on the Competent Person's duties, authority, and required qualifications.</p>
       <p><a href="https://www.osha.gov/etools/construction/trenching/competent-person" target="_blank" rel="noopener">Open OSHA's Competent Person guidance &rarr;</a></p>
+
+      <h2>What Is an Excavation Under OSHA 10?</h2>
+      <p>OSHA 10-Hour Construction outreach training introduces excavation hazards at a general-awareness level: recognizing cave-in risk, the concept of soil classification, and knowing that a protective system is required once an excavation reaches 5 feet. It's meant to give every construction worker baseline hazard awareness, not to qualify anyone as a site's Competent Person. Subpart P's own definition of an excavation - any man-made cut, cavity, trench, or depression formed by removing soil - is the same one used across OSHA 10, Subpart P training, and the standard itself; OSHA 10 just covers it at a survey level rather than the depth needed to classify soil, select a protective system, or run daily inspections. See our <a href="../excavation-competent-person-requirements/">Competent Person Requirements</a> page for what a Competent Person specifically needs beyond general awareness training.</p>
 
       <div class="disclaimer-box">
         This page is a plain-language orientation, not legal advice, and not a substitute for reading the official standard. Regulatory text and enforcement guidance can change; always confirm current requirements directly with OSHA or qualified counsel for your specific site and project. If you're in an OSHA-approved State Plan state, also see our <a href="../state-osha-plan-requirements/">State OSHA Plan Requirements</a> page.
@@ -1140,7 +1187,7 @@ SAFETY_BODY = breadcrumb_nav("Excavation, Trenching &amp; Shoring Safety Trainin
       {course_meta_table(SAFETY_META)}
 
       <h2>Role &amp; Purpose</h2>
-      <p>This course builds hazard awareness for anyone whose job puts them in or around an open excavation or trench. It covers what makes trenching dangerous, how soil type and protective systems reduce that danger, and what to do - and who to notify - when something looks wrong. It is not a Competent Person course; it does not cover soil classification testing, protective system design, or daily inspection duties in depth. For that, see <a href="../competent-person-excavation-trenching-shoring-training/">Competent Person for Excavation, Trenching &amp; Shoring Training</a>.</p>
+      <p>This trenching and shoring training course builds hazard awareness for anyone whose job puts them in or around an open excavation or trench. As trenching and excavation safety training, it covers what makes trenching dangerous, how soil type and protective systems reduce that danger, and what to do - and who to notify - when something looks wrong. It is not a Competent Person course; it does not cover soil classification testing, protective system design, or daily inspection duties in depth. For that, see <a href="../competent-person-excavation-trenching-shoring-training/">Competent Person for Excavation, Trenching &amp; Shoring Training</a>.</p>
 
       <h2>Who Should Take This Course</h2>
       <ul>
@@ -1284,7 +1331,7 @@ COMPETENT_BODY = breadcrumb_nav("Competent Person for Excavation, Trenching &amp
       {course_meta_table(COMPETENT_META)}
 
       <h2>Role &amp; Purpose</h2>
-      <p>This course prepares the individual an employer intends to designate as a site's excavation Competent Person: classifying soil, selecting and verifying protective systems, running daily inspections, and building the site's written excavation safety program. If your role is limited to working in or around a trench without these oversight duties, see <a href="../excavation-trenching-shoring-safety-training/">Excavation, Trenching &amp; Shoring Safety Training</a> instead.</p>
+      <p>This excavation competent person training - also searched as competent person excavation training, or competent person training for trenching and excavation - prepares the individual an employer intends to designate as a site's excavation Competent Person: classifying soil, selecting and verifying protective systems, running daily inspections, and building the site's written excavation safety program. If your role is limited to working in or around a trench without these oversight duties, see <a href="../excavation-trenching-shoring-safety-training/">Excavation, Trenching &amp; Shoring Safety Training</a> instead.</p>
 
       <h2>Who Should Take This Course</h2>
       <ul>
@@ -1332,13 +1379,14 @@ COMPETENT_BODY = breadcrumb_nav("Competent Person for Excavation, Trenching &amp
       <div class="callout-box">
         <p>This course supports OSHA compliance but does not replace it. The employer must designate who serves as Competent Person on each site, confirm that person has the authority to stop work, and ensure site-specific conditions - soil, water, utilities, equipment, and access - are actually evaluated in the field, not assumed from training alone.</p>
       </div>
+      <p>The stakes are not abstract. OSHA has cited employers for trench collapses tied directly to the absence of a properly designated Competent Person and adequate protective systems - in one 2022 Texas case involving a fatal trench collapse on a residential construction project, OSHA's citation specifically faulted the employer for not providing a Competent Person for the job and appropriate trench protective measures, resulting in a six-figure penalty. A cubic yard of soil can weigh as much as a car; there is rarely a second chance to get the protective system right after a wall gives way.</p>
 
       <h2>Policies</h2>
       <p>See our <a href="../refund-policy/">Refund Policy</a> and <a href="../certificate-policy/">Certificate Policy</a> for cancellation terms and certificate handling.</p>
 
       <h2>Also Available Through HAZWOPER OSHA Training</h2>
-      <p>SCORM packages for company LMS platforms, Virtual Instructor-Led sessions, and In-Person Group training for this course are available directly through HAZWOPER OSHA Training. See <a href="../index.html#accreditations">Certifications &amp; Accreditations</a> for provider credentials.</p>
-      <p><a href="https://hazwoper-osha.com/online-courses/competent-person-for-excavation-trenching-and-shoring" target="_blank" rel="noopener" class="btn btn-outline">View This Course on HAZWOPER-OSHA.com &rarr;</a></p>
+      <p>Need this excavation competent person training deployed to your own systems instead of taken here directly? A SCORM-packaged version of this competent person excavation training course, built for upload to a company LMS with full completion tracking, is available directly through HAZWOPER OSHA Training - along with Virtual Instructor-Led sessions and In-Person Group training. See <a href="../index.html#accreditations">Certifications &amp; Accreditations</a> for provider credentials.</p>
+      <p><a href="https://hazwoper-osha.com/online-courses/competent-person-for-excavation-trenching-and-shoring" target="_blank" rel="noopener" class="btn btn-outline">View SCORM &amp; Other Formats on HAZWOPER-OSHA.com &rarr;</a></p>
     </div>
   </section>
 
@@ -1533,7 +1581,7 @@ PAGES.append({
     "slug": "soil-classification-training",
     "active": None,
     "title": "Soil Classification Training for Excavations",
-    "description": "How OSHA's soil classification system works: Stable Rock, Types A-C, visual and manual tests, and water/vibration effects on stability.",
+    "description": "OSHA's excavation soil types explained: Stable Rock, Type A, Type B, and Type C, plus the tests a Competent Person uses to classify them.",
     "body": breadcrumb_nav("Soil Classification") + hero_solo(
         "Soil Classification",
         "Soil Classification for Excavations",
@@ -1554,6 +1602,16 @@ PAGES.append({
           </tbody>
         </table>
       </div>
+
+      <h2>The Four Soil Types, Explained</h2>
+      <h3>What Is Stable Rock?</h3>
+      <p>Stable rock is solid mineral material that stays intact with vertical sides when exposed - it's the only classification that can be left unsupported at a full vertical cut without a protective system, and it's also the least common condition most crews actually dig into.</p>
+      <h3>What Is Type A Soil?</h3>
+      <p>Type A is OSHA's most stable soil classification: cohesive material like clay, silty clay, sandy clay, or clay loam with an unconfined compressive strength of 1.5 tons per square foot (tsf) or greater. Soil can never be classified as Type A - no matter how it tests - if it's fissured, previously disturbed, part of a sloped layered system, subject to vibration from traffic or heavy equipment, or has water seeping through it. Any one of those conditions drops it at least to Type B.</p>
+      <h3>What Is Type B Soil?</h3>
+      <p>Type B is moderately stable soil - silt, sandy loam, medium clay, or unstable dry rock - with an unconfined compressive strength between 0.5 and 1.5 tsf. Soil that would otherwise test as Type A gets reclassified as Type B once fissuring, vibration, or water seepage is present.</p>
+      <h3>What Is Type C Soil?</h3>
+      <p>Type C is OSHA's least stable classification: granular soils like gravel, sand, and loamy sand, submerged soil, soil with actively seeping water, or previously disturbed soil, with an unconfined compressive strength of 0.5 tsf or less. Type C soil requires the flattest sloping angle of the three soil types and can't be benched at all - shoring or shielding are the only compact-footprint options.</p>
 
       <h2>Visual Tests</h2>
       <p>Observing the soil and excavation for signs of instability: fissures, layered soil types, water seepage, previously disturbed ground, spoil pile placement, and vibration sources nearby (traffic, equipment).</p>
@@ -1814,9 +1872,52 @@ PAGES.append({
       <p>Soil type, trench depth, available space, and the nature of the work all determine which system (or combination) is appropriate. A Competent Person makes this call using tabulated data for standard conditions, or a registered professional engineer's design for excavations 20 feet or deeper or non-standard conditions.</p>
 
       <p>For the full breakdown, including OSHA Appendix B and C references, see our <a href="../excavation-protective-systems/">Protective Systems page</a>. For how soil type drives this decision, see <a href="../soil-classification-training/">Soil Classification</a>.</p>
+
+      <h2>Each System, One at a Time</h2>
+      <h3>What Is Sloping?</h3>
+      <p>Sloping cuts the trench wall back at an angle away from the excavation instead of leaving it vertical, so there's no near-vertical face left to collapse. OSHA Appendix B sets the maximum allowable slope by soil type for excavations 20 feet deep or less: about 34&deg; (1.5H:1V) in Type C soil, 45&deg; (1H:1V) in Type B, and 53&deg; (3/4H:1V) in Type A. Sloping needs enough open ground on both sides to cut that angle back, which is why it's more common on open sites than tight urban ones.</p>
+      <h3>What Is Benching?</h3>
+      <p>Benching also removes soil to reduce the wall angle, but does it in a series of horizontal steps rather than one continuous slope. It achieves a similar stability effect to sloping in a more compact footprint - but it is not permitted in Type C soil, since that soil type can't reliably hold a stepped face.</p>
+      <h3>What Is Shoring?</h3>
+      <p>Shoring is a support structure - typically hydraulic jacks/rails or timber - installed against the trench walls to hold them in place rather than cutting them back. It's the go-to choice for confined sites that don't have room to slope or bench, but the shoring must match manufacturer tabulated data (or an engineer's design) for the specific soil type and depth, and it has to be installed as the trench is dug and removed from the bottom up as it's backfilled.</p>
+      <h3>What Is Shielding?</h3>
+      <p>Shielding, most often a trench box or trench shield, doesn't stabilize the soil at all - it protects workers by containing a collapse if one happens. That makes it well suited to utility work where the box can be pulled along the trench as crews progress, but it isn't a substitute for sloping, benching, or shoring where the soil itself needs to be held back.</p>
+
+      <h2>How the Four Systems Compare, Pair by Pair</h2>
+      <h3>Sloping vs. Shoring</h3>
+      <p>Sloping cuts the wall back; shoring holds it in place. Sloping needs lateral space to cut the angle, while shoring works in confined trenches where there's no room to slope. Sites often default to shoring specifically because sloping isn't physically possible within the available footprint.</p>
+      <h3>Sloping vs. Benching</h3>
+      <p>Both reduce wall angle by removing soil rather than supporting it, and both need the same lateral space. The difference is shape: sloping is one continuous angled face, benching is a series of steps. Benching's stepped shape also loses its footing in Type C soil, where sloping remains an option.</p>
+      <h3>Sloping vs. Shielding</h3>
+      <p>Sloping prevents a cave-in from happening; shielding doesn't prevent one; it protects workers inside the box if one occurs. Sloping changes the shape of the excavation itself, while a shield is portable equipment placed inside it.</p>
+      <h3>Benching vs. Shoring</h3>
+      <p>Benching reshapes the wall into steps and needs open space; shoring supports a vertical wall in a footprint too tight to bench. Benching is also barred outright in Type C soil, where shoring (built to the right tabulated data) still works.</p>
+      <h3>Shoring vs. Shielding</h3>
+      <p>This is the pairing crews mix up most. Shoring actively holds the trench wall in place to prevent a collapse. Shielding (a trench box) makes no attempt to prevent a collapse - it's rated to protect workers inside it if the surrounding soil does fail. Some job sites use both together.</p>
+      <h3>Benching vs. Shielding</h3>
+      <p>Benching is a permanent reshaping of the excavation walls that stays as the trench is dug; shielding is portable equipment lowered into an already-dug trench. Benching only works where benching's stepped geometry is permitted (not Type C); a properly rated shield can be used across more soil conditions since it isn't relying on the soil to hold a shape.</p>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="protective-system-faq">
+    <div class="container">
+      <div class="section-head"><p class="eyebrow">Common Questions</p><h2>Sloping, Benching, Shoring &amp; Shielding FAQ</h2></div>
+      <div class="faq-page-list">
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">What's the difference between sloping and shoring?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Sloping cuts the trench wall back at an angle so it can't collapse near-vertically; shoring installs a support structure to hold an existing wall in place. Sloping needs lateral space to cut the angle back; shoring is used where that space doesn't exist.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">What's the difference between benching and shoring?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Benching reshapes the trench wall into horizontal steps and, like sloping, needs open space to do it. Shoring instead supports a vertical wall with a hydraulic or timber structure, which is why it's the choice for confined trenches where benching isn't physically possible - and the only one of the two still allowed in Type C soil.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">Is sloping the same as benching?<span class="faq-icon">+</span></button><div class="faq-answer"><p>No. Both cut soil back rather than support it, but sloping is one continuous angled face and benching is a series of steps. Benching isn't permitted in Type C soil; sloping is.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">Are sloping, benching, shoring, and shielding interchangeable?<span class="faq-icon">+</span></button><div class="faq-answer"><p>No. Each depends on soil type, depth, available space, and the nature of the work, and OSHA specifies exactly when each is (and isn't) permitted. A Competent Person selects the right system - or combination - for the conditions on site that day.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">Can shoring and shielding be used together?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes. Some sites combine protective systems - for example, using a trench box (shielding) for the working area while shoring supports an adjacent section - as long as each component meets its own tabulated data or engineered design for the soil and depth involved.</p></div></div>
+      </div>
     </div>
   </section>""",
-    "extra_schema": breadcrumb_schema("Sloping, Benching, Shoring & Shielding", "/sloping-benching-shoring-shielding-explained/"),
+    "extra_schema": breadcrumb_schema("Sloping, Benching, Shoring & Shielding", "/sloping-benching-shoring-shielding-explained/") + faqpage_schema("""
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">What's the difference between sloping and shoring?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Sloping cuts the trench wall back at an angle so it can't collapse near-vertically; shoring installs a support structure to hold an existing wall in place. Sloping needs lateral space to cut the angle back; shoring is used where that space doesn't exist.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">What's the difference between benching and shoring?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Benching reshapes the trench wall into horizontal steps and, like sloping, needs open space to do it. Shoring instead supports a vertical wall with a hydraulic or timber structure, which is why it's the choice for confined trenches where benching isn't physically possible - and the only one of the two still allowed in Type C soil.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">Is sloping the same as benching?<span class="faq-icon">+</span></button><div class="faq-answer"><p>No. Both cut soil back rather than support it, but sloping is one continuous angled face and benching is a series of steps. Benching isn't permitted in Type C soil; sloping is.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">Are sloping, benching, shoring, and shielding interchangeable?<span class="faq-icon">+</span></button><div class="faq-answer"><p>No. Each depends on soil type, depth, available space, and the nature of the work, and OSHA specifies exactly when each is (and isn't) permitted. A Competent Person selects the right system - or combination - for the conditions on site that day.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">Can shoring and shielding be used together?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes. Some sites combine protective systems - for example, using a trench box (shielding) for the working area while shoring supports an adjacent section - as long as each component meets its own tabulated data or engineered design for the soil and depth involved.</p></div></div>
+"""),
 })
 
 PAGES.append({
@@ -2157,7 +2258,7 @@ FAQ_BODY = """
         <p class="eyebrow">FAQ &amp; Resource Library</p>
         <h1>Excavation, Trenching &amp; Shoring <span>FAQ</span></h1>
         <p class="hero-lead">
-          45+ answers on OSHA excavation requirements, cave-in hazards, soil classification, protective systems,
+          55+ answers on OSHA excavation requirements, cave-in hazards, soil classification, protective systems,
           Competent Person duties, certificates, and which of our two courses fits your job.
         </p>
         <div class="hero-cta-row">
@@ -2201,6 +2302,10 @@ FAQ_BODY = """
         <div class="faq-item"><button class="faq-question" aria-expanded="false">What happens if a site is found out of compliance with excavation rules?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Non-compliance can result in significant OSHA fines per violation, stop-work orders, and in serious cases criminal referral if a fatality results from a willful violation. Trenching is consistently one of OSHA's most-cited and most fatal construction hazards, and enforcement has intensified in recent years.</p></div></div>
         <div class="faq-item"><button class="faq-question" aria-expanded="false">Who enforces excavation regulations, and can state rules differ from federal OSHA?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Federal OSHA enforces 29 CFR 1926 Subpart P in most states, but roughly half the states run their own OSHA-approved state plans, which must be at least as protective as the federal rules and sometimes add requirements on top. See our <a href="../state-osha-plan-requirements/">State OSHA Plan Requirements</a> page.</p></div></div>
         <div class="faq-item"><button class="faq-question" aria-expanded="false">Does every excavation need a permit like a confined space entry?<span class="faq-icon">+</span></button><div class="faq-answer"><p>No. Unlike confined space entry, OSHA's excavation standard doesn't require a written permit for each dig. Instead it requires a Competent Person to evaluate soil and site conditions, select an appropriate protective system, and conduct daily inspections before and during the work.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">What are OSHA's shoring requirements?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Under 29 CFR 1926.652, shoring must be designed using either the manufacturer's tabulated data for the soil type and depth present, OSHA's own tabulated data in Appendix C, or a registered professional engineer's design for excavations 20 feet or deeper or conditions the tabulated data doesn't cover. It must be installed as the trench is dug and removed only as it's backfilled, working from the bottom up. See <a href="../osha-excavation-standards/">OSHA Excavation Standards</a> for the full breakdown.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">What are OSHA's trench requirements?<span class="faq-icon">+</span></button><div class="faq-answer"><p>A protective system is required for any trench 5 feet or deeper, unless it's cut entirely into stable rock or a Competent Person determines no hazard exists. Trenches also need safe means of access and egress within 25 feet of lateral travel for crews working 4 feet or deeper, spoil and equipment kept at least 2 feet back from the edge, and daily Competent Person inspections. See <a href="../osha-excavation-standards/">OSHA Excavation Standards</a> for citations to each requirement.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">What is an excavation under OSHA 10?<span class="faq-icon">+</span></button><div class="faq-answer"><p>OSHA 10 construction outreach training covers excavation hazards at a general-awareness level - recognizing cave-in risk, the four soil types, and when protective systems are required - but it isn't a substitute for Subpart P Competent Person training. An OSHA 10 card shows general hazard-recognition training; it doesn't by itself qualify anyone as the site's Competent Person. See our <a href="../excavation-competent-person-requirements/">Competent Person Requirements</a> page.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">What are OSHA's standards for trenching?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Trenching falls under the same standard as all excavation work, 29 CFR 1926 Subpart P, since a trench is legally just a narrow excavation. That standard sets the soil classification system, the four protective-system options (sloping, benching, shoring, shielding), access/egress and spoil-placement rules, and Competent Person inspection duties. See <a href="../osha-excavation-standards/">OSHA Excavation Standards</a> for the section-by-section summary.</p></div></div>
       </div>
     </div>
   </section>
@@ -2218,6 +2323,8 @@ FAQ_BODY = """
         <div class="faq-item"><button class="faq-question" aria-expanded="false">Can a manufacturer's tabulated data be used instead of engineering calculations for a protective system?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes, for most standard configurations. A registered professional engineer's design is required for excavations 20 feet or deeper, or for non-standard conditions tabulated data doesn't cover.</p></div></div>
         <div class="faq-item"><button class="faq-question" aria-expanded="false">When is a protective system required?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Whenever an excavation is 5 feet or deeper, unless it's entirely in stable rock or a Competent Person determines no hazard exists. A Competent Person can also require protection in shallower excavations if a hazard is identified.</p></div></div>
         <div class="faq-item"><button class="faq-question" aria-expanded="false">When is a registered professional engineer required?<span class="faq-icon">+</span></button><div class="faq-answer"><p>For excavations 20 feet or deeper, or for protective system designs that fall outside standard manufacturer tabulated data. See our <a href="../excavation-protective-systems/">Protective Systems</a> page.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">Which protective system involves cutting the walls of the excavation at an angle?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Sloping. It cuts the trench wall back at an angle away from the excavation instead of holding it vertical, so a collapse has nowhere near-vertical to fall from. The required angle gets flatter as soil gets less stable - see our <a href="../sloping-benching-shoring-shielding-explained/">Sloping vs. Benching vs. Shoring vs. Shielding</a> comparison for the angle-by-soil-type breakdown.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">Why are methods such as sloping, benching, shoring, and shielding required?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Because an unprotected trench wall can fail without warning, and a cubic yard of soil weighs enough to crush or suffocate a worker in seconds. OSHA requires one of these four protective systems - or an accepted combination of them - for any excavation 5 feet or deeper (unless it's stable rock or a Competent Person finds no hazard) precisely to control that cave-in risk. See <a href="../osha-excavation-standards/">OSHA Excavation Standards</a> for the underlying rule.</p></div></div>
       </div>
     </div>
   </section>
@@ -2313,9 +2420,9 @@ PAGES.append({
     "slug": "frequently-asked-questions",
     "active": "faq",
     "title": "Excavation, Trenching & Shoring Training FAQ",
-    "description": "45+ answers on OSHA excavation requirements, cave-in hazards, soil classification, protective systems, and Competent Person duties.",
+    "description": "55+ answers on OSHA excavation requirements, cave-in hazards, soil classification, protective systems, and Competent Person duties.",
     "body": FAQ_BODY,
-    "extra_schema": breadcrumb_schema("FAQ", "/frequently-asked-questions/"),
+    "extra_schema": breadcrumb_schema("FAQ", "/frequently-asked-questions/") + faqpage_schema(FAQ_BODY),
 })
 
 # ---------------------------------------------------------------------------
