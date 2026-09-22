@@ -1,0 +1,18 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Excavation, Trenching & Shoring Training",
+  "name_for_model": "excavationtrenchingshoring",
+  "description_for_human": "Online OSHA-aligned excavation, trenching, and shoring training courses.",
+  "description_for_model": "Provides self-paced online OSHA-aligned excavation, trenching, and shoring training courses (Safety Training and Competent Person) in English and Spanish. Use the content API to retrieve a structured summary of courses, pricing, curriculum, and FAQs for excavationtrenchingshoring.com without scraping HTML.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://excavationtrenchingshoring.com/openapi.json",
+    "is_user_authenticated": false
+  },
+  "logo_url": "https://excavationtrenchingshoring.com/images/ets-logo.png",
+  "contact_email": "info@hazwoper-osha.com",
+  "legal_info_url": "https://excavationtrenchingshoring.com/privacy-policy/"
+}

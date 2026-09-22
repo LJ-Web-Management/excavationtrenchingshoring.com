@@ -787,6 +787,20 @@ HOME_SCHEMA = """<script type="application/ld+json">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Choose the Right Excavation Training Course",
+  "description": "A quick decision guide for picking the right excavationtrenchingshoring.com course based on your role on the job.",
+  "step": [
+    {"@type": "HowToStep", "name": "Identify your role", "text": "Determine whether you simply work in or around excavations, or whether you're responsible for classifying soil, selecting protective systems, and running daily inspections."},
+    {"@type": "HowToStep", "name": "General crew", "text": "Take the 3-hour Excavation, Trenching & Shoring Safety Training for foundational hazard recognition around excavations."},
+    {"@type": "HowToStep", "name": "Competent Person duties", "text": "Take the 8-hour Competent Person for Excavation, Trenching & Shoring Training, covering soil classification, protective systems, and daily inspections."},
+    {"@type": "HowToStep", "name": "Enroll", "text": "Select seats for your chosen course at excavationtrenchingshoring.com/#pricing and receive a certificate of completion immediately after finishing."}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "Course",
   "name": "Excavation, Trenching & Shoring Safety Training",
   "description": "Crew-level hazard-awareness course covering cave-in, atmospheric, and utility-strike hazards, soil classification and protective system basics, and safe access, egress, and spoil pile placement.",

@@ -33,7 +33,16 @@ GA_TAG = """<!-- Google tag (gtag.js) -->
     document.head.appendChild(s);
   });
 </script>
-<script src="https://analytics.ahrefs.com/analytics.js" data-key="6BpOTc7DCKdhopmJKKlYcQ" async></script>"""
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="6BpOTc7DCKdhopmJKKlYcQ" async></script>
+
+<!-- Microsoft Clarity -->
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "ylzb3ubjjp");
+</script>"""
 
 TAWK_SCRIPT = """<!--Start of Tawk.to Script-->
 <script type="text/javascript">
@@ -122,6 +131,10 @@ def render_head(*, prefix, title, description, canonical_path, extra_schema="", 
     social_image = "https://excavationtrenchingshoring.com/images/ets-logo.png"
     css = f'{prefix}css/styles.css'
     canonical = f"https://excavationtrenchingshoring.com{canonical_path}"
+    ai_plugin_link = (
+        '\n<link rel="ai-plugin" href="https://excavationtrenchingshoring.com/.well-known/ai-plugin.json">'
+        if canonical_path == "/" else ""
+    )
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -130,7 +143,7 @@ def render_head(*, prefix, title, description, canonical_path, extra_schema="", 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
 <meta name="description" content="{description}">
-<link rel="canonical" href="{canonical}">
+<link rel="canonical" href="{canonical}">{ai_plugin_link}
 <link rel="icon" type="image/png" href="{icon}">
 <link rel="apple-touch-icon" href="{icon}">
 
@@ -244,8 +257,14 @@ def render_header(*, prefix, active=None):
 </header>"""
 
 
-def render_footer(*, prefix, include_main_js=True):
+def render_footer(*, prefix, include_main_js=True, is_home=False):
     p = prefix
+    ai_agents_line = (
+        '\n      <p style="margin-top:6px;font-size:.78rem;opacity:.75;">For AI agents: '
+        '<a href="/llms.txt">llms.txt</a> &middot; <a href="/llms-full.txt">llms-full.txt</a> '
+        '&middot; <a href="/openapi.json">openapi.json</a></p>'
+        if is_home else ""
+    )
     return f"""<footer class="site-footer">
   <div class="container footer-grid">
 
@@ -346,7 +365,7 @@ def render_footer(*, prefix, include_main_js=True):
   </div>
   <div class="footer-bottom">
     <div class="container">
-      <p>&copy; 2026, Industrial Certified Training, LLC, All Rights Reserved</p>
+      <p>&copy; 2026, Industrial Certified Training, LLC, All Rights Reserved</p>{ai_agents_line}
     </div>
   </div>
 </footer>
@@ -371,7 +390,7 @@ def render_page(*, slug, title, description, body, extra_schema="", og_title=Non
         extra_head_raw=extra_head_raw,
     )
     header = render_header(prefix=prefix, active=active)
-    footer = render_footer(prefix=prefix, include_main_js=include_main_js)
+    footer = render_footer(prefix=prefix, include_main_js=include_main_js, is_home=is_home)
     main_class_attr = f' class="{main_class}"' if main_class else ""
     return f"""{head}
 <body>
@@ -436,12 +455,17 @@ def write_sitemap(pages):
     print("wrote sitemap.xml")
 
 
+AI_CRAWLER_AGENTS = [
+    "GPTBot", "ChatGPT-User", "OAI-SearchBot", "ClaudeBot", "Claude-Web",
+    "anthropic-ai", "PerplexityBot", "Perplexity-User", "Google-Extended",
+    "CCBot", "Bytespider", "Applebot-Extended",
+]
+
+
 def write_robots():
-    content = (
-        "User-agent: *\n"
-        "Allow: /\n\n"
-        "Sitemap: https://excavationtrenchingshoring.com/sitemap.xml\n"
-    )
+    blocks = ["User-agent: *\nAllow: /"]
+    blocks += [f"User-agent: {agent}\nAllow: /" for agent in AI_CRAWLER_AGENTS]
+    content = "\n\n".join(blocks) + "\n\nSitemap: https://excavationtrenchingshoring.com/sitemap.xml\n"
     out_path = os.path.join(ROOT, "robots.txt")
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(content)

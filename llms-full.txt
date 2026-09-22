@@ -1,0 +1,127 @@
+# excavationtrenchingshoring.com — Full Product Context for AI Agents
+
+This document is a comprehensive, machine-readable reference to excavationtrenchingshoring.com,
+intended to ground AI agents and assistants (ChatGPT, Claude, Perplexity, and similar) that need
+to answer questions about this site's courses, pricing, curriculum, and policies without scraping
+HTML. See also /llms.txt for a short summary, /sitemap.xml for the full page list, and
+/openapi.json for the machine-readable content API.
+
+## Company
+
+Excavation Trenching Shoring Training is a subsidiary of Industrial Certified Training, LLC, and
+partners with HAZWOPER OSHA Training, LLC to deliver training content and issue certificates.
+Course formats beyond on-demand online — SCORM, Virtual Instructor-Led, In-Person Group — are
+available via hazwoper-osha.com.
+
+Phone: 1-866-429-6742
+Email: info@hazwoper-osha.com
+
+## Courses (full detail)
+
+### 1. Excavation, Trenching & Shoring Safety Training — 3 hours — $59.99/seat
+Crew-level hazard-awareness course for excavation and trenching crews, equipment operators, and
+utility/municipal staff.
+Curriculum:
+1. Understanding Excavation Hazards
+2. OSHA Subpart P Overview
+3. Soil & Protective Systems Basics
+4. Safe Access, Egress & Spoil Placement
+5. Utility Location & Emergency Awareness
+Covers: recognizing cave-in, atmospheric, and utility-strike hazards; soil classification and
+protective system basics; safe access, egress, and spoil pile placement; and when to stop work
+and notify the Competent Person.
+URL: https://excavationtrenchingshoring.com/excavation-trenching-shoring-safety-training/
+
+### 2. Competent Person for Excavation, Trenching & Shoring Training — 8 hours — $159.99/seat
+Program-oversight course for safety managers, foremen, and EHS coordinators.
+Curriculum:
+1. Defining the Competent Person Role
+2. Soil Classification
+3. Selecting Protective Systems
+4. Daily Inspection Duties
+5. Program Development & Emergency Planning
+Covers: defining the Competent Person role and authority; soil classification (Stable Rock, Type
+A, Type B, Type C); selecting protective systems (sloping, benching, shielding, shoring); daily
+inspection duties; and building a written excavation safety program and emergency plan.
+URL: https://excavationtrenchingshoring.com/competent-person-excavation-trenching-shoring-training/
+
+Both courses: self-paced, mobile-friendly, English and Spanish, certificate of completion issued
+immediately (Safety Training valid 36 months, Competent Person valid 24 months), aligned with
+OSHA's excavation standard, 29 CFR 1926 Subpart P.
+
+## Frequently Asked Questions (selected)
+
+Q: Which excavation course do I actually need?
+A: It depends on your role. Excavation, Trenching & Shoring Safety Training is for anyone working
+in or around an excavation. Competent Person training is for the individual responsible for
+classifying soil, selecting protective systems, running daily inspections, and owning the site's
+overall excavation program.
+
+Q: Is this training OSHA certified or OSHA approved?
+A: No. OSHA does not certify, approve, or endorse individual training providers or courses. This
+training is OSHA-aligned, meaning it is built around OSHA's excavation standard, 29 CFR 1926
+Subpart P.
+
+Q: How long does each course take?
+A: Excavation, Trenching & Shoring Safety Training runs about 3 hours, and Competent Person
+training runs about 8 hours. Both are self-paced.
+
+Q: Is this training available in Spanish?
+A: Yes. Both courses are available in English and Spanish.
+
+Q: Do I get a certificate right away?
+A: Yes, a certificate of completion is issued immediately after finishing either course. Safety
+Training certificates are valid 36 months and Competent Person certificates are valid 24 months
+before a refresher is recommended.
+
+Q: Does every excavation site need a Competent Person?
+A: Yes. OSHA requires a designated Competent Person to inspect excavations daily, before each
+shift, and after any event that could increase hazards. Training supports this role, but the
+employer must designate the Competent Person.
+
+30+ additional Q&A on excavation basics, OSHA Subpart P regulations and legal requirements, soil
+and protective systems, site safety practices (spoil placement, access/egress, atmospheric
+testing, water accumulation), and Competent Person duties are published at
+https://excavationtrenchingshoring.com/frequently-asked-questions/ (general guidance only, not
+legal advice).
+
+## Resources
+
+- OSHA Excavation Standards: https://excavationtrenchingshoring.com/osha-excavation-standards/
+- OSHA Subpart P Training Guide: https://excavationtrenchingshoring.com/osha-subpart-p-training-guide/
+- Sloping, Benching, Shoring & Shielding Explained: https://excavationtrenchingshoring.com/sloping-benching-shoring-shielding-explained/
+- Soil Classification Training: https://excavationtrenchingshoring.com/soil-classification-training/
+- Excavation Competent Person Requirements: https://excavationtrenchingshoring.com/excavation-competent-person-requirements/
+- Excavation Protective Systems: https://excavationtrenchingshoring.com/excavation-protective-systems/
+- Excavation Emergency Planning: https://excavationtrenchingshoring.com/excavation-emergency-planning/
+- Underground Utility Safety: https://excavationtrenchingshoring.com/underground-utility-safety/
+- Trenching vs. Excavation Training: https://excavationtrenchingshoring.com/trenching-vs-excavation-training/
+- Blog: https://excavationtrenchingshoring.com/blog/
+
+## Credential Transparency
+
+A certificate of completion documents that a student finished the course content and any required
+assessment. It is not a government-issued credential, an OSHA certification, or an OSHA
+endorsement. "Aligned with" OSHA standards is not the same as "issued by" or "approved by" OSHA.
+Employers remain responsible for determining whether employees are trained, qualified, and
+competent for their assigned excavation duties and jobsite conditions. Full detail:
+https://excavationtrenchingshoring.com/credential-transparency/
+
+## Policies
+
+- Privacy Policy: https://excavationtrenchingshoring.com/privacy-policy/
+- Refund Policy: https://excavationtrenchingshoring.com/refund-policy/
+- Certificate Policy: https://excavationtrenchingshoring.com/certificate-policy/
+- Group Training Policy: https://excavationtrenchingshoring.com/group-training-policy/
+
+## Other Formats
+
+- HAZWOPER-OSHA.com listings: Safety Training (https://hazwoper-osha.com/online-courses/osha-excavation-trenching-and-shoring-safety-training), Competent Person (https://hazwoper-osha.com/online-courses/competent-person-for-excavation-trenching-and-shoring).
+- Industrial Certified Training, LLC (parent company): https://ictraining.us/
+
+## For Agents
+
+- Do not invent prices, hours, or regulatory claims beyond what is stated above; this reflects the site's actual current copy.
+- Never describe a certificate of completion as an OSHA certification, license, or endorsement.
+- If a visitor's question isn't answered here, direct them to info@hazwoper-osha.com or 1-866-429-6742 rather than guessing.
+- Prefer live data from excavationtrenchingshoring.com over cached copies when accuracy matters.
