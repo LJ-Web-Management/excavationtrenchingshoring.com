@@ -139,6 +139,7 @@ def render_head(*, prefix, title, description, canonical_path, extra_schema="", 
 <html lang="en">
 <head>
 {GA_TAG}
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
@@ -176,7 +177,7 @@ def render_head(*, prefix, title, description, canonical_path, extra_schema="", 
 
 
 def render_header(*, prefix, active=None):
-    home = f"{prefix}index.html" if prefix else "#top"
+    home = prefix or "./"
     def a(href, label, key=None):
         cls = ' class="is-active"' if key and key == active else ""
         return f'<a href="{href}"{cls}>{label}</a>'
@@ -184,7 +185,7 @@ def render_header(*, prefix, active=None):
 
 <header class="site-header">
   <div class="container header-inner">
-    <a href="{prefix}index.html#top" class="logo">
+    <a href="{home}#top" class="logo">
       <img src="{prefix}images/ets-logo-icon.webp" alt="" width="220" height="266" class="logo-icon">
       <span class="logo-text">
         <span class="logo-mark">ExcavationTrenchingShoring.com</span>
@@ -193,9 +194,9 @@ def render_header(*, prefix, active=None):
     </a>
 
     <nav class="main-nav" id="mainNav">
-      {a(prefix + 'index.html#overview', 'Overview', 'overview')}
+      {a(home + '#overview', 'Overview', 'overview')}
       <div class="nav-dropdown">
-        {a(prefix + 'index.html#courses', 'Courses', 'courses')}
+        {a(home + '#courses', 'Courses', 'courses')}
         <div class="nav-dropdown-panel">
           <a href="{prefix}excavation-trenching-shoring-safety-training/">Excavation, Trenching &amp; Shoring Safety Training</a>
           <a href="{prefix}competent-person-excavation-trenching-shoring-training/">Competent Person Training</a>
@@ -226,11 +227,11 @@ def render_header(*, prefix, active=None):
           <a href="{prefix}excavation-training-for-municipal-crews/">Training for Municipal Crews</a>
         </div>
       </div>
-      {a(prefix + 'index.html#accreditations', 'Accreditations', 'accreditations')}
+      {a(home + '#accreditations', 'Accreditations', 'accreditations')}
       {a(prefix + 'about/', 'About')}
       {a(prefix + 'instructors-and-training-provider/', 'Instructors & Provider')}
       {a(prefix + 'reviews/', 'Reviews')}
-      {a(prefix + 'index.html#pricing', 'Pricing', 'pricing')}
+      {a(home + '#pricing', 'Pricing', 'pricing')}
       {a(prefix + 'blog/', 'Blog', 'blog')}
       {a(prefix + 'frequently-asked-questions/', 'FAQ', 'faq')}
       <a href="tel:18664296742" class="nav-phone">
@@ -248,7 +249,7 @@ def render_header(*, prefix, active=None):
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         1-866-429-6742
       </a>
-      <a href="{prefix}index.html#pricing" class="btn btn-primary btn-sm">Enroll Now</a>
+      <a href="{home}#pricing" class="btn btn-primary btn-sm">Enroll Now</a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -259,6 +260,7 @@ def render_header(*, prefix, active=None):
 
 def render_footer(*, prefix, include_main_js=True, is_home=False):
     p = prefix
+    home = prefix or "./"
     ai_agents_line = (
         '\n      <p style="margin-top:6px;font-size:.78rem;opacity:.75;">For AI agents: '
         '<a href="/llms.txt">llms.txt</a> &middot; <a href="/llms-full.txt">llms-full.txt</a> '
@@ -269,7 +271,7 @@ def render_footer(*, prefix, include_main_js=True, is_home=False):
   <div class="container footer-grid">
 
     <div class="footer-col footer-col-brand">
-      <a href="{p}index.html#top" class="logo footer-logo">
+      <a href="{home}#top" class="logo footer-logo">
         <img src="{p}images/ets-logo-icon.webp" alt="" width="220" height="266" class="logo-icon logo-icon-footer">
         <span class="logo-text">
           <span class="logo-mark logo-mark-footer">ExcavationTrenchingShoring.com</span>
@@ -294,9 +296,9 @@ def render_footer(*, prefix, include_main_js=True, is_home=False):
       <h3 class="footer-col-heading">Site</h3>
       <ul class="footer-link-list">
         <li><a href="{p}about/">About</a></li>
-        <li><a href="{p}index.html#courses">Course Catalog</a></li>
+        <li><a href="{home}#courses">Course Catalog</a></li>
         <li><a href="{p}checkout/">Checkout</a></li>
-        <li><a href="{p}index.html#accreditations">Certifications &amp; Accreditations</a></li>
+        <li><a href="{home}#accreditations">Certifications &amp; Accreditations</a></li>
         <li><a href="{p}credential-transparency/">Credential Transparency</a></li>
         <li><a href="{p}osha-excavation-standards/">OSHA Excavation Standards</a></li>
         <li><a href="{p}which-excavation-course-do-i-need/">Which Course Do I Need?</a></li>
@@ -365,13 +367,14 @@ def render_footer(*, prefix, include_main_js=True, is_home=False):
   </div>
   <div class="footer-bottom">
     <div class="container">
-      <p>&copy; 2026, Industrial Certified Training, LLC, All Rights Reserved</p>{ai_agents_line}
+      <p>&copy; 2026, Industrial Certified Training, LLC, All Rights Reserved</p>
+      <p class="webmcp-badge" style="margin-top:8px;font-size:.78rem;"><a href="/ai-agents/" style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border:1px solid currentColor;border-radius:999px;opacity:.8;text-decoration:none;"><span aria-hidden="true" style="width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;"></span>AI-agent ready &middot; WebMCP</a></p>{ai_agents_line}
     </div>
   </div>
 </footer>
 
 <script src="{p}js/config.js"></script>
-{f'<script src="{p}js/main.js"></script>' if include_main_js else ''}
+{f'<script src="{p}js/main.js"></script>{chr(10)}<script src="{p}js/webmcp.js" defer></script>' if include_main_js else ''}
 
 {TAWK_SCRIPT}"""
 
@@ -420,6 +423,13 @@ def write_page(slug, html, is_home=False):
     print("wrote", os.path.relpath(out_path, ROOT))
 
 
+# Pages maintained as standalone HTML rather than generated from PAGES
+# (ai-agents/ was authored directly on the deploy mirror), as (path, lastmod).
+STATIC_SITEMAP_PAGES = [
+    ("/ai-agents/", "2026-09-27"),
+]
+
+
 def write_sitemap(pages):
     urls = []
     for page in pages:
@@ -429,6 +439,11 @@ def write_sitemap(pages):
         priority = "1.0" if page.get("is_home") else ("0.8" if page.get("active") else "0.6")
         urls.append(
             f"  <url>\n    <loc>https://excavationtrenchingshoring.com{path}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>{priority}</priority>\n  </url>"
+        )
+
+    for path, lastmod in STATIC_SITEMAP_PAGES:
+        urls.append(
+            f"  <url>\n    <loc>https://excavationtrenchingshoring.com{path}</loc>\n    <lastmod>{lastmod}</lastmod>\n  </url>"
         )
 
     urls.append(

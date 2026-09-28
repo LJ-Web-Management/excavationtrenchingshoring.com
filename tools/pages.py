@@ -52,7 +52,7 @@ def breadcrumb_schema(name, path):
     )
 
 
-def hero_solo(eyebrow, title, lead, cta_href="../index.html#pricing", cta_label="Enroll Now"):
+def hero_solo(eyebrow, title, lead, cta_href="../#pricing", cta_label="Enroll Now"):
     return f"""
   <section class="hero hero-solo" id="top">
     <div class="container hero-inner">
@@ -62,7 +62,7 @@ def hero_solo(eyebrow, title, lead, cta_href="../index.html#pricing", cta_label=
         <p class="hero-lead">{lead}</p>
         <div class="hero-cta-row">
           <a href="{cta_href}" class="btn btn-primary btn-lg">{cta_label}</a>
-          <a href="../index.html#top" class="btn btn-outline-light btn-lg">Back to Home</a>
+          <a href="../#top" class="btn btn-outline-light btn-lg">Back to Home</a>
         </div>
       </div>
     </div>
@@ -70,7 +70,7 @@ def hero_solo(eyebrow, title, lead, cta_href="../index.html#pricing", cta_label=
 
 
 def course_picker_widget(full=False, prefix="../"):
-    pricing_href = f"{prefix}index.html#pricing" if prefix else "#pricing"
+    pricing_href = f"{prefix}#pricing" if prefix else "#pricing"
     extra_row = ""
     if full:
         extra_row = """
@@ -879,7 +879,7 @@ PAGES.append({
         OSHA does not certify or endorse individual training providers for excavation and trenching. OSHA standards require employers to ensure workers receive training appropriate to their assigned duties, hazards, equipment, protective systems, soil conditions, and worksite conditions.
       </div>
 
-      <p>For the provider-level accreditation details referenced above, see <a href="../index.html#accreditations">Certifications &amp; Accreditations</a> or <a href="https://hazwoper-osha.com/about" target="_blank" rel="noopener">HAZWOPER OSHA Training's about page</a>.</p>
+      <p>For the provider-level accreditation details referenced above, see <a href="../#accreditations">Certifications &amp; Accreditations</a> or <a href="https://hazwoper-osha.com/about" target="_blank" rel="noopener">HAZWOPER OSHA Training's about page</a>.</p>
     </div>
   </section>
 
@@ -888,7 +888,7 @@ PAGES.append({
       <h2>Ready to Enroll?</h2>
       <p>Know exactly what you're getting, and what still depends on your employer.</p>
       <div class="hero-cta-row">
-        <a href="../index.html#pricing" class="btn btn-primary btn-lg">See Course Pricing</a>
+        <a href="../#pricing" class="btn btn-primary btn-lg">See Course Pricing</a>
         <a href="../which-excavation-course-do-i-need/" class="btn btn-outline-light btn-lg">Which Course Do I Need?</a>
       </div>
     </div>
@@ -986,7 +986,7 @@ PAGES.append({
       <p>ExcavationTrenchingShoring.com is a dedicated resource for excavation, trenching, and shoring safety training, built to help construction crews, utility workers, equipment operators, supervisors, and designated Competent Persons find the right course, understand OSHA's excavation standard, and get a certificate of completion they can use for their compliance records.</p>
 
       <h2>Who Delivers the Training</h2>
-      <p>Training courses on this site are provided through <a href="https://hazwoper-osha.com/" target="_blank" rel="noopener">HAZWOPER OSHA Training, LLC</a>, which delivers OSHA, EPA, DOT, hazardous materials, construction safety, and workplace compliance training across online, SCORM, virtual instructor-led, and in-person formats. HAZWOPER OSHA Training is an <a href="https://www.iacet.org/affiliates/accredited-providers-list/accredited-provider-overview/?providerID=131618" target="_blank" rel="noopener">IACET Accredited Provider</a> and a BBB A+ rated business. See <a href="../index.html#accreditations">Certifications &amp; Accreditations</a> for details, and <a href="../credential-transparency/">Credential Transparency</a> for what that accreditation does and doesn't mean for an individual course.</p>
+      <p>Training courses on this site are provided through <a href="https://hazwoper-osha.com/" target="_blank" rel="noopener">HAZWOPER OSHA Training, LLC</a>, which delivers OSHA, EPA, DOT, hazardous materials, construction safety, and workplace compliance training across online, SCORM, virtual instructor-led, and in-person formats. HAZWOPER OSHA Training is an <a href="https://www.iacet.org/affiliates/accredited-providers-list/accredited-provider-overview/?providerID=131618" target="_blank" rel="noopener">IACET Accredited Provider</a> and a BBB A+ rated business. See <a href="../#accreditations">Certifications &amp; Accreditations</a> for details, and <a href="../credential-transparency/">Credential Transparency</a> for what that accreditation does and doesn't mean for an individual course.</p>
 
       <h2>Why This Site Exists</h2>
       <p>Excavation and trenching are among the most fatal hazards in construction, and the two roles on a job site - the crew working around a trench and the Competent Person responsible for it - need very different depths of training. This site exists to make that distinction clear, point each role to the right course, and be transparent about what OSHA does and doesn't require, certify, or approve. See our <a href="../which-excavation-course-do-i-need/">course-picker guide</a> to find your role.</p>
@@ -1043,7 +1043,7 @@ PAGES.append({
   <section class="section">
     <div class="container content-prose">
       <h2>Training Provider</h2>
-      <p>Excavation, trenching, and shoring courses on this site are delivered through <a href="https://hazwoper-osha.com/" target="_blank" rel="noopener">HAZWOPER OSHA Training's</a> training platform and instructional team. View current organizational certifications, accreditations, and provider credentials on our <a href="../index.html#accreditations">Certifications &amp; Accreditations</a> section.</p>
+      <p>Excavation, trenching, and shoring courses on this site are delivered through <a href="https://hazwoper-osha.com/" target="_blank" rel="noopener">HAZWOPER OSHA Training's</a> training platform and instructional team. View current organizational certifications, accreditations, and provider credentials on our <a href="../#accreditations">Certifications &amp; Accreditations</a> section.</p>
 
       <h2>Lead Instructor</h2>
       <div class="instructor-card">
@@ -1255,7 +1255,7 @@ SAFETY_BODY = breadcrumb_nav("Excavation, Trenching &amp; Shoring Safety Trainin
       <p>See our <a href="../refund-policy/">Refund Policy</a> and <a href="../certificate-policy/">Certificate Policy</a> for cancellation terms and certificate handling.</p>
 
       <h2>Also Available Through HAZWOPER OSHA Training</h2>
-      <p>SCORM packages for company LMS platforms, Virtual Instructor-Led sessions, and In-Person Group training for this course are available directly through HAZWOPER OSHA Training. See <a href="../index.html#accreditations">Certifications &amp; Accreditations</a> for provider credentials.</p>
+      <p>SCORM packages for company LMS platforms, Virtual Instructor-Led sessions, and In-Person Group training for this course are available directly through HAZWOPER OSHA Training. See <a href="../#accreditations">Certifications &amp; Accreditations</a> for provider credentials.</p>
       <p><a href="https://hazwoper-osha.com/online-courses/osha-excavation-trenching-and-shoring-safety-training" target="_blank" rel="noopener" class="btn btn-outline">View This Course on HAZWOPER-OSHA.com &rarr;</a></p>
     </div>
   </section>
@@ -1278,7 +1278,7 @@ SAFETY_BODY = breadcrumb_nav("Excavation, Trenching &amp; Shoring Safety Trainin
             <li>Certificate of completion, valid 36 months</li>
             <li>Aligned with 29 CFR 1926 Subpart P</li>
           </ul>
-          <a href="../index.html#pricing" class="btn btn-primary btn-block btn-lg">Enroll Now</a>
+          <a href="../#pricing" class="btn btn-primary btn-block btn-lg">Enroll Now</a>
         </div>
       </div>
     </div>
@@ -1399,7 +1399,7 @@ COMPETENT_BODY = breadcrumb_nav("Competent Person for Excavation, Trenching &amp
       <p>See our <a href="../refund-policy/">Refund Policy</a> and <a href="../certificate-policy/">Certificate Policy</a> for cancellation terms and certificate handling.</p>
 
       <h2>Also Available Through HAZWOPER OSHA Training</h2>
-      <p>Need this excavation competent person training deployed to your own systems instead of taken here directly? A SCORM-packaged version of this competent person excavation training course, built for upload to a company LMS with full completion tracking, is available directly through HAZWOPER OSHA Training - along with Virtual Instructor-Led sessions and In-Person Group training. See <a href="../index.html#accreditations">Certifications &amp; Accreditations</a> for provider credentials.</p>
+      <p>Need this excavation competent person training deployed to your own systems instead of taken here directly? A SCORM-packaged version of this competent person excavation training course, built for upload to a company LMS with full completion tracking, is available directly through HAZWOPER OSHA Training - along with Virtual Instructor-Led sessions and In-Person Group training. See <a href="../#accreditations">Certifications &amp; Accreditations</a> for provider credentials.</p>
       <p><a href="https://hazwoper-osha.com/online-courses/competent-person-for-excavation-trenching-and-shoring" target="_blank" rel="noopener" class="btn btn-outline">View SCORM &amp; Other Formats on HAZWOPER-OSHA.com &rarr;</a></p>
     </div>
   </section>
@@ -1422,7 +1422,7 @@ COMPETENT_BODY = breadcrumb_nav("Competent Person for Excavation, Trenching &amp
             <li>Certificate of completion, valid 24 months</li>
             <li>Aligned with 29 CFR 1926 Subpart P</li>
           </ul>
-          <a href="../index.html#pricing" class="btn btn-primary btn-block btn-lg">Enroll Now</a>
+          <a href="../#pricing" class="btn btn-primary btn-block btn-lg">Enroll Now</a>
         </div>
       </div>
     </div>
@@ -2092,7 +2092,7 @@ PAGES.append({
         "Policy",
         "Refund Policy",
         "This policy mirrors the refund terms used across HAZWOPER OSHA Training's course catalog, since courses on this site are delivered and billed through that platform.",
-        cta_href="../index.html#pricing",
+        cta_href="../#pricing",
     ) + """
   <section class="section">
     <div class="container content-prose">
@@ -2134,7 +2134,7 @@ PAGES.append({
         "Policy",
         "Privacy Policy",
         "This site's data practices follow HAZWOPER OSHA Training, LLC's Privacy Policy, since course enrollment, delivery, and certificate issuance are handled through that platform.",
-        cta_href="../index.html#pricing",
+        cta_href="../#pricing",
     ) + """
   <section class="section">
     <div class="container content-prose">
@@ -2194,7 +2194,7 @@ PAGES.append({
         "Policy",
         "Certificate Policy",
         "How certificates of completion are issued, what they mean, and how long they're valid.",
-        cta_href="../index.html#pricing",
+        cta_href="../#pricing",
     ) + """
   <section class="section">
     <div class="container content-prose">
@@ -2235,12 +2235,12 @@ PAGES.append({
         "Policy",
         "Group Training Policy",
         "How bulk enrollment, seat pricing, and team training work for construction crews and safety departments.",
-        cta_href="../index.html#pricing",
+        cta_href="../#pricing",
     ) + """
   <section class="section">
     <div class="container content-prose">
       <h2>Bulk Seat Pricing</h2>
-      <p>Per-seat pricing decreases as seat count increases, applied automatically at checkout based on the number of seats entered. See the "Bulk Pricing" table on either course's enrollment card at <a href="../index.html#pricing">Pricing</a> for current tier discounts.</p>
+      <p>Per-seat pricing decreases as seat count increases, applied automatically at checkout based on the number of seats entered. See the "Bulk Pricing" table on either course's enrollment card at <a href="../#pricing">Pricing</a> for current tier discounts.</p>
 
       <h2>Mixed-Course Group Enrollment</h2>
       <p>Many employers enroll their crew in Excavation, Trenching &amp; Shoring Safety Training and their designated Competent Person(s) in the advanced course as a combined order. Contact us to coordinate a combined invoice across both courses.</p>
@@ -2277,7 +2277,7 @@ FAQ_BODY = """
         </p>
         <div class="hero-cta-row">
           <a href="#basics" class="btn btn-primary btn-lg">Browse Questions</a>
-          <a href="../index.html#pricing" class="btn btn-outline-light btn-lg">Enroll Now</a>
+          <a href="../#pricing" class="btn btn-outline-light btn-lg">Enroll Now</a>
         </div>
       </div>
     </div>
@@ -2312,7 +2312,7 @@ FAQ_BODY = """
       <div class="section-head"><p class="eyebrow">Category</p><h2>Regulations &amp; Legal Requirements</h2></div>
       <div class="faq-page-list">
         <div class="faq-item"><button class="faq-question" aria-expanded="false">What does 29 CFR 1926 Subpart P cover?<span class="faq-icon">+</span></button><div class="faq-answer"><p>29 CFR 1926 Subpart P is OSHA's excavation standard for construction. It sets requirements for soil classification, protective systems (sloping, benching, shoring, and shielding), safe access and egress, spoil placement, and the daily inspection duties of the Competent Person. See our <a href="../osha-excavation-standards/">OSHA Excavation Standards</a> page for official links.</p></div></div>
-        <div class="faq-item"><button class="faq-question" aria-expanded="false">Is excavation and trenching training legally required?<span class="faq-icon">+</span></button><div class="faq-answer"><p>OSHA requires that only trained and authorized personnel design protective systems and that a Competent Person, capable of identifying hazards and authorized to take corrective action, be designated for every excavation site. Employers are responsible for training workers on the hazards of the work they perform. Our <a href="../index.html#courses">Safety Training and Competent Person courses</a> map directly to these requirements.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">Is excavation and trenching training legally required?<span class="faq-icon">+</span></button><div class="faq-answer"><p>OSHA requires that only trained and authorized personnel design protective systems and that a Competent Person, capable of identifying hazards and authorized to take corrective action, be designated for every excavation site. Employers are responsible for training workers on the hazards of the work they perform. Our <a href="../#courses">Safety Training and Competent Person courses</a> map directly to these requirements.</p></div></div>
         <div class="faq-item"><button class="faq-question" aria-expanded="false">What happens if a site is found out of compliance with excavation rules?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Non-compliance can result in significant OSHA fines per violation, stop-work orders, and in serious cases criminal referral if a fatality results from a willful violation. Trenching is consistently one of OSHA's most-cited and most fatal construction hazards, and enforcement has intensified in recent years.</p></div></div>
         <div class="faq-item"><button class="faq-question" aria-expanded="false">Who enforces excavation regulations, and can state rules differ from federal OSHA?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Federal OSHA enforces 29 CFR 1926 Subpart P in most states, but roughly half the states run their own OSHA-approved state plans, which must be at least as protective as the federal rules and sometimes add requirements on top. See our <a href="../state-osha-plan-requirements/">State OSHA Plan Requirements</a> page.</p></div></div>
         <div class="faq-item"><button class="faq-question" aria-expanded="false">Does every excavation need a permit like a confined space entry?<span class="faq-icon">+</span></button><div class="faq-answer"><p>No. Unlike confined space entry, OSHA's excavation standard doesn't require a written permit for each dig. Instead it requires a Competent Person to evaluate soil and site conditions, select an appropriate protective system, and conduct daily inspections before and during the work.</p></div></div>
@@ -2376,7 +2376,7 @@ FAQ_BODY = """
       <div class="section-head"><p class="eyebrow">Category</p><h2>Certifications &amp; Course Formats</h2></div>
       <div class="faq-page-list">
         <div class="faq-item"><button class="faq-question" aria-expanded="false">How long does each excavation course take?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Excavation, Trenching &amp; Shoring Safety Training runs about 3 hours, and Competent Person training runs about 8 hours. Both are self-paced online courses.</p></div></div>
-        <div class="faq-item"><button class="faq-question" aria-expanded="false">How much does excavation training cost?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Excavation, Trenching &amp; Shoring Safety Training is $59.99 per seat, and Competent Person training is $159.99 per seat. Volume discounts are available; see <a href="../index.html#pricing">Pricing</a>.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">How much does excavation training cost?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Excavation, Trenching &amp; Shoring Safety Training is $59.99 per seat, and Competent Person training is $159.99 per seat. Volume discounts are available; see <a href="../#pricing">Pricing</a>.</p></div></div>
         <div class="faq-item"><button class="faq-question" aria-expanded="false">Is excavation training available online, or does it require in-person attendance?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Both courses are on-demand online by default. SCORM packages, Virtual Instructor-Led sessions, and In-Person Group training are available through HAZWOPER OSHA Training for teams that need those formats.</p></div></div>
         <div class="faq-item"><button class="faq-question" aria-expanded="false">Is online excavation training accepted for OSHA compliance?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes, for the classroom and knowledge portion. Employers must also confirm hands-on competency wherever the standard requires it. See "Is online excavation training enough?" below.</p></div></div>
         <div class="faq-item"><button class="faq-question" aria-expanded="false">How often should excavation training be refreshed?<span class="faq-icon">+</span></button><div class="faq-answer"><p>OSHA doesn't set a fixed renewal interval, but our certificates carry recommended validity periods: 36 months for Safety Training, 24 months for Competent Person training.</p></div></div>
@@ -2409,6 +2409,7 @@ FAQ_BODY = """
         <div class="faq-item"><button class="faq-question" aria-expanded="false">Is the course available in Spanish?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes, both courses are available in English and Spanish.</p></div></div>
         <div class="faq-item"><button class="faq-question" aria-expanded="false">Do you offer SCORM for company LMS systems?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes, through HAZWOPER OSHA Training. See the "Also Available Through HAZWOPER OSHA Training" section on each course page.</p></div></div>
         <div class="faq-item"><button class="faq-question" aria-expanded="false">Do you offer virtual instructor-led or in-person training?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes, both are available through HAZWOPER OSHA Training for teams that need those formats. Links are on each course page.</p></div></div>
+        <div class="faq-item"><button class="faq-question" aria-expanded="false">Can I use an AI assistant to find or buy a course?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes. ExcavationTrenchingShoring.com supports <a href="../ai-agents/">WebMCP</a>, so AI assistants in supported browsers can list our courses, recommend one based on a worker's role, price out any number of seats, and open checkout with your course selected. The assistant can't pay for you: you always enter your own card details and click Pay yourself.</p></div></div>
       </div>
 
       <div class="faq-cta-box">
@@ -2424,7 +2425,7 @@ FAQ_BODY = """
       <h2>Keep Your Crew Compliant. Train Every Role.</h2>
       <p>Two courses, online. Certificate on completion. English &amp; Spanish.</p>
       <div class="hero-cta-row">
-        <a href="../index.html#pricing" class="btn btn-primary btn-lg">Enroll Now</a>
+        <a href="../#pricing" class="btn btn-primary btn-lg">Enroll Now</a>
         <a href="tel:18664296742" class="btn btn-outline-light btn-lg">Call 1-866-429-6742</a>
       </div>
     </div>
@@ -2530,7 +2531,7 @@ CHECKOUT_BODY = """
         <div class="account-notice-callout success-callout">
           <p>Check your email inbox for your receipt and LMS account login details to start your course training immediately.</p>
         </div>
-        <a href="../index.html" class="btn btn-primary btn-lg">Return to Home</a>
+        <a href="../" class="btn btn-primary btn-lg">Return to Home</a>
       </div>
 
       <!-- MAIN CHECKOUT FORM (2-COLUMN LAYOUT) -->
@@ -2666,7 +2667,7 @@ PAGES.append({
     "description": "Complete your purchase of OSHA-aligned excavation, trenching, and shoring training. Secure checkout, instant access, and certificates included.",
     "body": CHECKOUT_BODY,
     "extra_head_raw": CHECKOUT_HEAD_EXTRA,
-    "extra_body_scripts": '<script src="../js/checkout.js"></script>',
+    "extra_body_scripts": '<script src="../js/checkout.js"></script>\n<script src="../js/webmcp.js" defer></script>',
     "main_class": "checkout-page-main",
     "include_main_js": False,
     "noindex": True,

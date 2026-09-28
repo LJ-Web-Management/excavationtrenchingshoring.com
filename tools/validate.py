@@ -48,7 +48,11 @@ for filepath in html_files:
         path_part = href.split("#")[0]
         if not path_part:
             continue
-        target = os.path.normpath(os.path.join(page_dir, path_part))
+        if path_part.startswith("/"):
+            # Root-absolute ("/ai-agents/") resolves against the site root.
+            target = os.path.normpath(os.path.join(ROOT, path_part.lstrip("/")))
+        else:
+            target = os.path.normpath(os.path.join(page_dir, path_part))
         if not os.path.exists(target):
             errors.append(f"{rel}: broken link -> {href} (resolved: {os.path.relpath(target, ROOT)})")
 
