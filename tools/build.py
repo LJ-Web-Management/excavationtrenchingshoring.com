@@ -33,16 +33,7 @@ GA_TAG = """<!-- Google tag (gtag.js) -->
     document.head.appendChild(s);
   });
 </script>
-<script src="https://analytics.ahrefs.com/analytics.js" data-key="6BpOTc7DCKdhopmJKKlYcQ" async></script>
-
-<!-- Microsoft Clarity -->
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "ylzb3ubjjp");
-</script>"""
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="6BpOTc7DCKdhopmJKKlYcQ" async></script>"""
 
 TAWK_SCRIPT = """<!--Start of Tawk.to Script-->
 <script type="text/javascript">

@@ -14,7 +14,6 @@ const BLOG_URL = SITE_URL + "/blog";
 const LOGO_URL = SITE_URL + "/images/ets-logo.png";
 const GA_ID = "G-4965R39GCF";
 const AHREFS_KEY = "6BpOTc7DCKdhopmJKKlYcQ";
-const CLARITY_ID = "ylzb3ubjjp";
 
 // Ahrefs flags <title> over 60 chars and meta descriptions over 160 chars.
 const MAX_TITLE_LEN = 60;
@@ -637,16 +636,6 @@ function relatedPostsHtml(posts, slug) {
   );
 }
 
-const CLARITY_SNIPPET = `<!-- Microsoft Clarity -->
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "${CLARITY_ID}");
-</script>
-`;
-
 // Brings an already-published post page up to the current template's SEO
 // rules without re-rendering it from the source doc (the source may have
 // been hand-edited after publishing). Idempotent - safe to run on every build.
@@ -669,9 +658,8 @@ function repairPostHtml(html, post, posts) {
     html = html.split(base + ".png").join(post.image).split(base + ".jpg").join(post.image);
   }
 
-  if (!html.includes("clarity.ms/tag/")) {
-    html = html.replace("<!-- Google tag (gtag.js) -->", CLARITY_SNIPPET + "\n<!-- Google tag (gtag.js) -->");
-  }
+  // Microsoft Clarity was removed from the site; strip it from older posts.
+  html = html.replace(/\n*<!-- Microsoft Clarity -->\n<script type="text\/javascript">\n[\s\S]*?"clarity", "script", "[^"]+"\);\n<\/script>/, "");
 
   // Lighthouse requires the charset declaration within the first 1024 bytes,
   // so it (and the viewport tag) must precede the analytics snippets.
@@ -768,7 +756,6 @@ function buildPostPage(title, dateDisplay, isoDate, bodyHtml, imagePath, excerpt
   gtag('config', '${GA_ID}');
 </script>
 <script src="https://analytics.ahrefs.com/analytics.js" data-key="${AHREFS_KEY}" async></script>
-${CLARITY_SNIPPET}
 <title>${escapeHtml(seoTitle(title))}</title>
 <meta name="description" content="${description}">
 <link rel="canonical" href="${canonicalUrl}">
