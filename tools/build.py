@@ -14,33 +14,37 @@ import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-GA_TAG = """<!-- Google tag (gtag.js) -->
+# Third-party scripts (GA, Ahrefs, Tawk.to) are held as inert
+# <script type="text/plain" data-defer-src> placeholders and injected by the
+# loader on first user interaction or 5s after load, so none of them run
+# during initial render (Lighthouse Performance/TBT).
+GA_TAG = """<script>
+/* Third-party scripts (analytics, chat) load on first interaction or 5s after load, keeping them off the critical rendering path. */
+(function(w,d){var done=0,q=[],ev=['pointerdown','keydown','touchstart','scroll','mousemove'];
+function go(){if(done)return;done=1;ev.forEach(function(e){w.removeEventListener(e,go,{passive:true})});
+d.querySelectorAll('script[data-defer-src]').forEach(function(o){var s=d.createElement('script');for(var i=0;i<o.attributes.length;i++){var a=o.attributes[i];if(a.name!=='data-defer-src'&&a.name!=='type')s.setAttribute(a.name,a.value)}s.async=true;s.src=o.getAttribute('data-defer-src');d.head.appendChild(s)});
+while(q.length)q.shift()()}
+w.onThirdParty=function(f){done?f():q.push(f)};
+ev.forEach(function(e){w.addEventListener(e,go,{passive:true})});
+w.addEventListener('load',function(){setTimeout(go,5000)})})(window,document);
+</script>
+<script type="text/plain" data-defer-src="https://www.googletagmanager.com/gtag/js?id=G-4965R39GCF"></script>
+<!-- Google tag (gtag.js) -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-4965R39GCF');
-
-  // gtag() calls above just queue into dataLayer, so it's safe to fetch the
-  // actual gtag.js bundle after load instead of blocking the critical path -
-  // it competes for the same limited bandwidth as the hero image/fonts/CSS
-  // on a slow connection otherwise. Same trade-off Tawk.to already makes below.
-  window.addEventListener('load', function(){
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-4965R39GCF';
-    document.head.appendChild(s);
-  });
 </script>
-<script src="https://analytics.ahrefs.com/analytics.js" data-key="6BpOTc7DCKdhopmJKKlYcQ" async></script>"""
+<script type="text/plain" data-defer-src="https://analytics.ahrefs.com/analytics.js" data-key="6BpOTc7DCKdhopmJKKlYcQ"></script>"""
 
 TAWK_SCRIPT = """<!--Start of Tawk.to Script-->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 Tawk_API.autoStart = false;
 
-setTimeout(function(){
+onThirdParty(function(){
   Tawk_LoadStart = new Date();
   (function(){
     var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
@@ -64,7 +68,7 @@ setTimeout(function(){
       clearInterval(poll);
     }
   }, 250);
-}, 2500);
+});
 </script>
 <!--End of Tawk.to Script-->"""
 

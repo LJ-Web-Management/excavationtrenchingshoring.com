@@ -746,8 +746,18 @@ function buildPostPage(title, dateDisplay, isoDate, bodyHtml, imagePath, excerpt
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* Third-party scripts (analytics, chat) load on first interaction or 5s after load, keeping them off the critical rendering path. */
+(function(w,d){var done=0,q=[],ev=['pointerdown','keydown','touchstart','scroll','mousemove'];
+function go(){if(done)return;done=1;ev.forEach(function(e){w.removeEventListener(e,go,{passive:true})});
+d.querySelectorAll('script[data-defer-src]').forEach(function(o){var s=d.createElement('script');for(var i=0;i<o.attributes.length;i++){var a=o.attributes[i];if(a.name!=='data-defer-src'&&a.name!=='type')s.setAttribute(a.name,a.value)}s.async=true;s.src=o.getAttribute('data-defer-src');d.head.appendChild(s)});
+while(q.length)q.shift()()}
+w.onThirdParty=function(f){done?f():q.push(f)};
+ev.forEach(function(e){w.addEventListener(e,go,{passive:true})});
+w.addEventListener('load',function(){setTimeout(go,5000)})})(window,document);
+</script>
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>
+<script type="text/plain" data-defer-src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -755,7 +765,7 @@ function buildPostPage(title, dateDisplay, isoDate, bodyHtml, imagePath, excerpt
 
   gtag('config', '${GA_ID}');
 </script>
-<script src="https://analytics.ahrefs.com/analytics.js" data-key="${AHREFS_KEY}" async></script>
+<script type="text/plain" data-defer-src="https://analytics.ahrefs.com/analytics.js" data-key="${AHREFS_KEY}"></script>
 <title>${escapeHtml(seoTitle(title))}</title>
 <meta name="description" content="${description}">
 <link rel="canonical" href="${canonicalUrl}">
@@ -1014,7 +1024,7 @@ ${bodyHtml}
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 Tawk_API.autoStart = false;
 
-setTimeout(function(){
+onThirdParty(function(){
   Tawk_LoadStart = new Date();
   (function(){
     var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
@@ -1035,7 +1045,7 @@ setTimeout(function(){
       clearInterval(poll);
     }
   }, 250);
-}, 2500);
+});
 </script>
 <!--End of Tawk.to Script-->
 </body>
