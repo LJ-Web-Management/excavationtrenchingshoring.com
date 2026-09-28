@@ -463,6 +463,43 @@
   color: var(--blue-600, #1d5bd6);
 }
 
+.related-posts {
+  margin-top: 48px;
+  padding: 24px 28px;
+  border-radius: 16px;
+  background: var(--gray-50, #f6f8fb);
+  border: 1px solid var(--gray-200, #e2e6ec);
+}
+
+.related-posts h2 {
+  font-size: 1.25rem;
+  margin: 0 0 12px;
+  color: var(--navy-800, #122a4d);
+}
+
+.related-posts ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.related-posts li {
+  border-left: 3px solid var(--gold-500, #f5c400);
+  padding: 6px 0 6px 14px;
+  margin-bottom: 8px;
+}
+
+.related-posts a {
+  font-weight: 600;
+  color: var(--navy-800, #122a4d);
+  text-decoration: none;
+}
+
+.related-posts a:hover {
+  color: var(--blue-600, #1d5bd6);
+  text-decoration: underline;
+}
+
 @media (max-width: 640px) {
   .blog-container {
     padding: 32px 16px 60px;

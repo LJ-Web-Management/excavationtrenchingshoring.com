@@ -14,6 +14,17 @@ const BLOG_URL = SITE_URL + "/blog";
 const LOGO_URL = SITE_URL + "/images/ets-logo.png";
 const GA_ID = "G-4965R39GCF";
 const AHREFS_KEY = "6BpOTc7DCKdhopmJKKlYcQ";
+const CLARITY_ID = "ylzb3ubjjp";
+
+// Ahrefs flags <title> over 60 chars and meta descriptions over 160 chars.
+const MAX_TITLE_LEN = 60;
+const MAX_DESCRIPTION_LEN = 155;
+// How many other posts each post links to in its "Related articles" block.
+const RELATED_COUNT = 4;
+// Featured images are re-encoded to WebP at this max width - the raw PNGs
+// from the content pipeline are 2-3MB, which Ahrefs flags as too large.
+const IMAGE_MAX_WIDTH = 1200;
+const IMAGE_WEBP_QUALITY = 72;
 
 const SUPPORTED_EXTENSIONS = [".docx", ".txt", ".zip"];
 const DOC_EXTENSIONS = [".docx", ".txt"];
@@ -233,6 +244,25 @@ function extractTitle(blocks, fallbackTitle) {
   return { title: fallbackTitle, rest: blocks };
 }
 
+// Older automation prompts opened every post with an SEO-brief label line
+// ("Search Intent" / "The Compliance Question") and a divider before the
+// first paragraph. Neither belongs on the page, so drop them if present.
+function stripLeadingLabels(blocks) {
+  const out = blocks.slice();
+  const isText = (b) => b && b.type === "text";
+  while (isText(out[0]) && isDividerLine(out[0].text)) out.shift();
+  if (isText(out[0])) {
+    const t = plainNormalize(out[0].text);
+    if (/^(search intent|the compliance question)$/i.test(t)) {
+      out.shift();
+      while (isText(out[0]) && isDividerLine(out[0].text)) out.shift();
+    } else if (/^search intent\s*:\s*/i.test(t)) {
+      out[0] = { type: "text", text: out[0].text.replace(/^\s*search intent\s*:\s*/i, "") };
+    }
+  }
+  return out;
+}
+
 function buildBodyHtml(blocks) {
   const output = [];
   let bulletBuffer = [];
@@ -392,12 +422,34 @@ function buildBodyHtml(blocks) {
   return output.join("\n");
 }
 
+// The source docs open with an SEO brief ("Search Intent" on its own line or
+// "Search Intent: <query>") and short section labels that come through as
+// plain <p>s, so the first <p> is rarely the article's opening. Use the first
+// paragraph that reads like prose instead. Hard-wrapped docs turn each line
+// into its own <p>, so keep joining lines until one ends a sentence.
+function isExcerptCandidate(text) {
+  if (/^search intent\b/i.test(text)) return false;
+  return text.length >= 60 && /^[A-Z"“]/.test(text);
+}
+
 function excerptFromHtml(html, maxLen) {
-  const match = html.match(/<p[^>]*>([\s\S]*?)<\/p>/i);
-  const source = match ? match[1] : html;
-  const text = decodeEntities(source.replace(/<[^>]+>/g, " "))
-    .replace(/\s+/g, " ")
-    .trim();
+  const paragraphs = (html.match(/<p[^>]*>[\s\S]*?<\/p>/gi) || []).map((p) =>
+    decodeEntities(p.replace(/<[^>]+>/g, " "))
+      .replace(/\s+/g, " ")
+      .trim()
+  );
+  let start = paragraphs.findIndex(isExcerptCandidate);
+  if (start === -1) start = paragraphs.findIndex((p) => p && !/^search intent\b/i.test(p));
+  let text;
+  if (start === -1) {
+    text = decodeEntities(html.replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
+  } else {
+    text = paragraphs[start];
+    for (let i = start + 1; i < paragraphs.length && text.length <= maxLen; i++) {
+      if (/[.!?]["”’)]?$/.test(text)) break;
+      text += " " + paragraphs[i];
+    }
+  }
   if (text.length <= maxLen) return text;
   return text.slice(0, maxLen).replace(/\s+\S*$/, "") + "…";
 }
@@ -461,6 +513,209 @@ function updateSitemap(posts) {
   console.log("updated sitemap.xml with " + posts.length + " blog post(s)");
 }
 
+// Prerenders every post as a plain link inside #posts-list on the blog
+// index. blog.js replaces this markup with the paginated list on load, but
+// crawlers that don't run JS (and anyone with JS off) need real <a href>s,
+// otherwise every post is an orphan page with no internal links to it.
+const BLOG_INDEX = path.join(ROOT, "index.html");
+
+function postCardHtml(post) {
+  const thumb = post.image
+    ? '<img class="post-card-thumb" src="' + escapeHtml(post.image) + '" alt="' + escapeHtml(post.title) + '" loading="lazy" onerror="handleThumbError(this)">'
+    : "";
+  return (
+    '    <a class="post-card" href="posts/' + encodeURIComponent(post.slug) + '.html">' +
+    thumb +
+    '<div class="post-card-body">' +
+    '<div class="post-date">' + escapeHtml(post.dateDisplay || post.date) + "</div>" +
+    "<h2>" + escapeHtml(post.title) + "</h2>" +
+    "</div></a>\n"
+  );
+}
+
+function updateBlogIndex(posts) {
+  if (!fs.existsSync(BLOG_INDEX)) return;
+  const html = fs.readFileSync(BLOG_INDEX, "utf8");
+  const listRe = /(<section id="posts-list">)[\s\S]*?(<\/section>)/;
+  if (!listRe.test(html)) return;
+  const sorted = posts.slice().sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  const cards = sorted.map(postCardHtml).join("");
+  fs.writeFileSync(BLOG_INDEX, html.replace(listRe, (m, open, close) => open + "\n" + cards + "  " + close));
+  console.log("updated blog/index.html with " + posts.length + " post link(s)");
+}
+
+// ---------------------------------------------------------------------------
+// SEO helpers
+// ---------------------------------------------------------------------------
+
+// Post titles run 70-100 chars ("Topic: What Supervisors Should Check Before
+// Entry"). The <h1>/og:title keep the full title; the <title> tag uses the
+// full title when it fits, else the part before the colon, else a word-
+// boundary cut.
+function seoTitle(title, taken) {
+  if (title.length <= MAX_TITLE_LEN) return title;
+  const lead = title.split(":")[0].trim();
+  if (lead.length >= 35 && lead.length <= MAX_TITLE_LEN && !(taken && taken.has(lead))) return lead;
+  // Word-boundary cut, minus any dangling function words ("...What Supervisors Should").
+  let cut = title.slice(0, MAX_TITLE_LEN + 1).replace(/[\s,:;-]+\S*$/, "");
+  while (/[\s:,-]+(a|an|and|before|for|in|need|of|on|should|the|to|what|who|when|how|with)$/i.test(cut)) {
+    cut = cut.replace(/[\s:,-]+\S+$/, "");
+  }
+  return cut;
+}
+
+// A posts.json entry may pin its <title> with "seoTitle"; otherwise it is
+// derived, avoiding any <title> an earlier post already uses.
+function postSeoTitle(post, posts) {
+  if (post.seoTitle) return post.seoTitle;
+  const taken = new Set();
+  for (const other of posts) {
+    if (other.slug === post.slug) break;
+    taken.add(other.seoTitle || seoTitle(other.title));
+  }
+  return seoTitle(post.title, taken);
+}
+
+// Meta description: the post's opening prose, cut at the last full sentence
+// that fits, else at a word boundary. Never prefixed with the title.
+function metaDescription(bodyHtml) {
+  const text = excerptFromHtml(bodyHtml, 1000).replace(/…$/, "");
+  if (text.length <= MAX_DESCRIPTION_LEN) return text;
+  const head = text.slice(0, MAX_DESCRIPTION_LEN + 1);
+  const sentenceEnd = Math.max(head.lastIndexOf(". "), head.lastIndexOf("? "), head.lastIndexOf("! "));
+  if (sentenceEnd >= 120) return head.slice(0, sentenceEnd + 1);
+  return head.slice(0, MAX_DESCRIPTION_LEN - 1).replace(/[\s,;:-]+\S*$/, "") + "…";
+}
+
+// Re-encodes an image buffer to a resized WebP. Returns null when sharp isn't
+// installed so a missing optional dependency never blocks a publish.
+function toWebp(buffer) {
+  let sharp;
+  try {
+    sharp = require("sharp");
+  } catch (e) {
+    console.log("  [image] sharp not installed - keeping original image format");
+    return Promise.resolve(null);
+  }
+  return sharp(buffer)
+    .resize({ width: IMAGE_MAX_WIDTH, withoutEnlargement: true })
+    .webp({ quality: IMAGE_WEBP_QUALITY })
+    .toBuffer();
+}
+
+// Related-articles block: the RELATED_COUNT posts closest in publish order,
+// so every post gets several incoming internal links instead of only the one
+// from the blog index. Wrapped in markers so it can be regenerated in place.
+const RELATED_START = "<!-- related-posts:start -->";
+const RELATED_END = "<!-- related-posts:end -->";
+
+function relatedPosts(posts, slug) {
+  const sorted = posts.slice().sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+  const i = sorted.findIndex((p) => p.slug === slug);
+  if (i === -1) return [];
+  const picks = [];
+  for (let d = 1; picks.length < RELATED_COUNT && d < sorted.length; d++) {
+    if (sorted[i - d]) picks.push(sorted[i - d]);
+    if (picks.length < RELATED_COUNT && sorted[i + d]) picks.push(sorted[i + d]);
+  }
+  return picks;
+}
+
+function relatedPostsHtml(posts, slug) {
+  const picks = relatedPosts(posts, slug);
+  if (!picks.length) return "";
+  const items = picks
+    .map((p) => '      <li><a href="' + encodeURIComponent(p.slug) + '.html">' + escapeHtml(p.title) + "</a></li>")
+    .join("\n");
+  return (
+    RELATED_START +
+    '\n  <aside class="related-posts" aria-labelledby="related-posts-heading">\n' +
+    '    <h2 id="related-posts-heading">Related Articles</h2>\n' +
+    "    <ul>\n" + items + "\n    </ul>\n" +
+    "  </aside>\n  " +
+    RELATED_END
+  );
+}
+
+const CLARITY_SNIPPET = `<!-- Microsoft Clarity -->
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "${CLARITY_ID}");
+</script>
+`;
+
+// Brings an already-published post page up to the current template's SEO
+// rules without re-rendering it from the source doc (the source may have
+// been hand-edited after publishing). Idempotent - safe to run on every build.
+function repairPostHtml(html, post, posts) {
+  const bodyMatch = html.match(/<article class="post-content">([\s\S]*?)<\/article>/);
+  const title = escapeHtml(postSeoTitle(post, posts));
+  html = html.replace(/<title>[\s\S]*?<\/title>/, "<title>" + title + "</title>");
+
+  if (bodyMatch) {
+    const desc = escapeHtml(metaDescription(bodyMatch[1]));
+    html = html
+      .replace(/(<meta name="description" content=")[^"]*(")/, "$1" + desc + "$2")
+      .replace(/(<meta property="og:description" content=")[^"]*(")/, "$1" + desc + "$2")
+      .replace(/(<meta name="twitter:description" content=")[^"]*(")/, "$1" + desc + "$2")
+      .replace(/("@type": "BlogPosting"[\s\S]*?"description": ")[^"]*(")/, "$1" + desc + "$2");
+  }
+
+  if (post.image) {
+    const base = post.image.replace(/\.[a-z]+$/i, "");
+    html = html.split(base + ".png").join(post.image).split(base + ".jpg").join(post.image);
+  }
+
+  if (!html.includes("clarity.ms/tag/")) {
+    html = html.replace('<meta charset="UTF-8">', CLARITY_SNIPPET + '\n<meta charset="UTF-8">');
+  }
+  if (!html.includes("js/webmcp.js")) {
+    html = html.replace('<script src="../../js/main.js"></script>', '<script src="../../js/main.js"></script>\n<script src="../../js/webmcp.js" defer></script>');
+  }
+
+  const related = relatedPostsHtml(posts, post.slug);
+  const relatedRe = new RegExp(RELATED_START + "[\\s\\S]*?" + RELATED_END);
+  if (relatedRe.test(html)) {
+    html = html.replace(relatedRe, related);
+  } else if (related) {
+    html = html.replace(/(<\/article>\n)(<\/main>)/, "$1  " + related + "\n$2");
+  }
+  return html;
+}
+
+// Converts any non-WebP featured image to WebP, then repairs every post page.
+function repairAllPosts(posts) {
+  return posts
+    .reduce((chain, post) => {
+      return chain.then(() => {
+        if (!post.image || /\.webp$/i.test(post.image)) return;
+        const src = path.join(ROOT, post.image);
+        if (!fs.existsSync(src)) return;
+        return toWebp(fs.readFileSync(src)).then((buf) => {
+          if (!buf) return;
+          const webpPath = post.image.replace(/\.[a-z]+$/i, ".webp");
+          fs.writeFileSync(path.join(ROOT, webpPath), buf);
+          fs.unlinkSync(src);
+          console.log("  [image] " + post.image + " -> " + webpPath);
+          post.image = webpPath;
+        });
+      });
+    }, Promise.resolve())
+    .then(() => {
+      for (const post of posts) {
+        const file = path.join(POSTS_DIR, post.slug + ".html");
+        if (!fs.existsSync(file)) continue;
+        const html = fs.readFileSync(file, "utf8");
+        const fixed = repairPostHtml(html, post, posts);
+        if (fixed !== html) fs.writeFileSync(file, fixed);
+      }
+      console.log("repaired SEO/related links on " + posts.length + " post(s)");
+    });
+}
+
 function uniqueSlug(baseSlug, existingSlugs) {
   let slug = baseSlug;
   let n = 2;
@@ -477,7 +732,7 @@ function uniqueSlug(baseSlug, existingSlugs) {
 // and blog-root assets are "../".
 function buildPostPage(title, dateDisplay, isoDate, bodyHtml, imagePath, excerpt, slug) {
   const escapedTitle = escapeHtml(title);
-  const description = escapeHtml(excerpt ? title + " - " + excerpt : title + " - Excavation, Trenching & Shoring Safety Blog.");
+  const description = escapeHtml(metaDescription(bodyHtml) || "Excavation, trenching and shoring safety guidance for employers, supervisors and crews.");
   const canonicalUrl = BLOG_URL + "/posts/" + slug + ".html";
   const shareImageUrl = imagePath ? SITE_URL + "/blog/" + imagePath : LOGO_URL;
 
@@ -501,18 +756,10 @@ function buildPostPage(title, dateDisplay, isoDate, bodyHtml, imagePath, excerpt
   gtag('config', '${GA_ID}');
 </script>
 <script src="https://analytics.ahrefs.com/analytics.js" data-key="${AHREFS_KEY}" async></script>
-
-<!-- Microsoft Clarity -->
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "ylzb3ubjjp");
-</script>
+${CLARITY_SNIPPET}
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${escapedTitle}</title>
+<title>${escapeHtml(seoTitle(title))}</title>
 <meta name="description" content="${description}">
 <link rel="canonical" href="${canonicalUrl}">
 <link rel="icon" type="image/png" href="../../images/ets-logo.png">
@@ -574,7 +821,7 @@ function buildPostPage(title, dateDisplay, isoDate, bodyHtml, imagePath, excerpt
 
 <header class="site-header">
   <div class="container header-inner">
-    <a href="../../index.html#top" class="logo">
+    <a href="../../#top" class="logo">
       <img src="../../images/ets-logo.png" alt="ExcavationTrenchingShoring.com" class="logo-icon">
       <span class="logo-text">
         <span class="logo-mark">ExcavationTrenchingShoring.com</span>
@@ -583,9 +830,9 @@ function buildPostPage(title, dateDisplay, isoDate, bodyHtml, imagePath, excerpt
     </a>
 
     <nav class="main-nav" id="mainNav">
-      <a href="../../index.html#overview">Overview</a>
+      <a href="../../#overview">Overview</a>
       <div class="nav-dropdown">
-        <a href="../../index.html#courses">Courses</a>
+        <a href="../../#courses">Courses</a>
         <div class="nav-dropdown-panel">
           <a href="../../excavation-trenching-shoring-safety-training/">Excavation, Trenching &amp; Shoring Safety Training</a>
           <a href="../../competent-person-excavation-trenching-shoring-training/">Competent Person Training</a>
@@ -616,11 +863,11 @@ function buildPostPage(title, dateDisplay, isoDate, bodyHtml, imagePath, excerpt
           <a href="../../excavation-training-for-municipal-crews/">Training for Municipal Crews</a>
         </div>
       </div>
-      <a href="../../index.html#accreditations">Accreditations</a>
+      <a href="../../#accreditations">Accreditations</a>
       <a href="../../about/">About</a>
       <a href="../../instructors-and-training-provider/">Instructors & Provider</a>
       <a href="../../reviews/">Reviews</a>
-      <a href="../../index.html#pricing">Pricing</a>
+      <a href="../../#pricing">Pricing</a>
       <a href="../" class="is-active">Blog</a>
       <a href="../../frequently-asked-questions/">FAQ</a>
       <a href="tel:18664296742" class="nav-phone">
@@ -638,7 +885,7 @@ function buildPostPage(title, dateDisplay, isoDate, bodyHtml, imagePath, excerpt
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         1-866-429-6742
       </a>
-      <a href="../../index.html#pricing" class="btn btn-primary btn-sm">Enroll Now</a>
+      <a href="../../#pricing" class="btn btn-primary btn-sm">Enroll Now</a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -661,7 +908,7 @@ ${bodyHtml}
   <div class="container footer-grid">
 
     <div class="footer-col footer-col-brand">
-      <a href="../../index.html#top" class="logo footer-logo">
+      <a href="../../#top" class="logo footer-logo">
         <img src="../../images/ets-logo.png" alt="ExcavationTrenchingShoring.com" class="logo-icon logo-icon-footer">
         <span class="logo-text">
           <span class="logo-mark logo-mark-footer">ExcavationTrenchingShoring.com</span>
@@ -686,8 +933,8 @@ ${bodyHtml}
       <h4 class="footer-col-heading">Site</h4>
       <ul class="footer-link-list">
         <li><a href="../../about/">About</a></li>
-        <li><a href="../../index.html#courses">Course Catalog</a></li>
-        <li><a href="../../index.html#accreditations">Certifications &amp; Accreditations</a></li>
+        <li><a href="../../#courses">Course Catalog</a></li>
+        <li><a href="../../#accreditations">Certifications &amp; Accreditations</a></li>
         <li><a href="../../credential-transparency/">Credential Transparency</a></li>
         <li><a href="../../osha-excavation-standards/">OSHA Excavation Standards</a></li>
         <li><a href="../../which-excavation-course-do-i-need/">Which Course Do I Need?</a></li>
@@ -763,6 +1010,7 @@ ${bodyHtml}
 
 <script src="../../js/config.js"></script>
 <script src="../../js/main.js"></script>
+<script src="../../js/webmcp.js" defer></script>
 
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">
@@ -884,7 +1132,7 @@ function main() {
     .readdirSync(UPLOADS_DIR)
     .filter((f) => SUPPORTED_EXTENSIONS.includes(path.extname(f).toLowerCase()));
 
-  if (files.length === 0) {
+  if (files.length === 0 && !process.argv.includes("--repair")) {
     console.log("No new documents to convert.");
     return;
   }
@@ -907,18 +1155,19 @@ function main() {
         console.log("Converting " + filename + " ...");
         return convertFile(filePath, filename).then(({ blocks, image }) => {
           const { title, rest } = extractTitle(blocks, titleFromFilename(filename));
-          const bodyHtml = buildBodyHtml(rest);
+          const bodyHtml = buildBodyHtml(stripLeadingLabels(rest));
 
           const baseSlug = slugify(title);
           const slug = uniqueSlug(baseSlug, existingSlugs);
           existingSlugs.add(slug);
 
+          return (image ? toWebp(image.buffer) : Promise.resolve(null)).then((webp) => {
           let imagePath = null;
           if (image) {
             fs.mkdirSync(POST_IMAGES_DIR, { recursive: true });
-            const imgExt = image.ext === ".jpeg" ? ".jpg" : image.ext;
+            const imgExt = webp ? ".webp" : image.ext === ".jpeg" ? ".jpg" : image.ext;
             imagePath = "assets/img/posts/" + slug + imgExt;
-            fs.writeFileSync(path.join(ROOT, imagePath), image.buffer);
+            fs.writeFileSync(path.join(ROOT, imagePath), webp || image.buffer);
           }
 
           const excerpt = excerptFromHtml(bodyHtml, 160);
@@ -936,12 +1185,15 @@ function main() {
 
           fs.renameSync(filePath, path.join(PROCESSED_DIR, filename));
           console.log("  -> posts/" + slug + ".html");
+          });
         });
       });
     }, Promise.resolve())
+    .then(() => repairAllPosts(posts))
     .then(() => {
       savePosts(posts);
       updateSitemap(posts);
+      updateBlogIndex(posts);
       console.log("Done. " + files.length + " post(s) published.");
     })
     .catch((err) => {
@@ -954,4 +1206,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { buildPostPage };
+module.exports = { buildPostPage, repairAllPosts, seoTitle, metaDescription, updateSitemap, updateBlogIndex, loadPosts, savePosts, excerptFromHtml };

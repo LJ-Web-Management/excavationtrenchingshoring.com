@@ -19,6 +19,10 @@ Excavation Trenching Shoring Training is a subsidiary of Industrial Certified Tr
 - [HAZWOPER-OSHA.com - Competent Person listing](https://hazwoper-osha.com/online-courses/competent-person-for-excavation-trenching-and-shoring): SCORM, Virtual Instructor-Led, and In-Person Group options.
 - [Industrial Certified Training, LLC](https://ictraining.us/): Parent company, specializing in OSHA, EPA, and IACET-accredited training.
 
+## AI Agents (WebMCP)
+
+- [AI Agents & WebMCP](https://excavationtrenchingshoring.com/ai-agents/): This site registers WebMCP tools (navigator.modelContext) on every page: list_courses, recommend_course, get_price_quote, search_site_content, get_certificate_verification_info, and start_checkout. start_checkout only opens a pre-filled checkout; the person always enters payment details and clicks Pay.
+
 ## Contact
 
 - Phone: 1-866-429-6742

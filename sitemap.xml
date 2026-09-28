@@ -131,6 +131,10 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://excavationtrenchingshoring.com/ai-agents/</loc>
+    <lastmod>2026-09-27</lastmod>
+  </url>
+  <url>
     <loc>https://excavationtrenchingshoring.com/blog/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -222,6 +226,42 @@
   <url>
     <loc>https://excavationtrenchingshoring.com/blog/posts/roadway-excavations-and-traffic-exposure-training-crews-to-control-vehicles-spoil-and-entry-points.html</loc>
     <lastmod>2026-09-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://excavationtrenchingshoring.com/blog/posts/groundwater-in-excavations-training-supervisors-to-control-water-before-crews-re-enter.html</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://excavationtrenchingshoring.com/blog/posts/excavation-inspection-after-utility-exposure-training-crews-to-recheck-support-and-entry-conditions.html</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://excavationtrenchingshoring.com/blog/posts/spoil-pile-placement-around-trenches-training-crews-to-control-surcharge-loads-before-entry.html</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://excavationtrenchingshoring.com/blog/posts/competent-person-trench-inspection-records-what-employers-should-document-before-entry.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://excavationtrenchingshoring.com/blog/posts/trench-access-and-egress-planning-what-supervisors-should-control-before-entry.html</loc>
+    <lastmod>2026-09-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://excavationtrenchingshoring.com/blog/posts/excavation-safety-near-existing-foundations-what-supervisors-should-check-before-entry.html</loc>
+    <lastmod>2026-09-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

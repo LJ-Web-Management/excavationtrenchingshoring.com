@@ -125,3 +125,7 @@ https://excavationtrenchingshoring.com/credential-transparency/
 - Never describe a certificate of completion as an OSHA certification, license, or endorsement.
 - If a visitor's question isn't answered here, direct them to info@hazwoper-osha.com or 1-866-429-6742 rather than guessing.
 - Prefer live data from excavationtrenchingshoring.com over cached copies when accuracy matters.
+
+## AI Agents (WebMCP)
+
+- [AI Agents & WebMCP](https://excavationtrenchingshoring.com/ai-agents/): This site registers WebMCP tools (navigator.modelContext) on every page: list_courses, recommend_course, get_price_quote, search_site_content, get_certificate_verification_info, and start_checkout. start_checkout only opens a pre-filled checkout; the person always enters payment details and clicks Pay.
