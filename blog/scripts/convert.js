@@ -670,7 +670,17 @@ function repairPostHtml(html, post, posts) {
   }
 
   if (!html.includes("clarity.ms/tag/")) {
-    html = html.replace('<meta charset="UTF-8">', CLARITY_SNIPPET + '\n<meta charset="UTF-8">');
+    html = html.replace("<!-- Google tag (gtag.js) -->", CLARITY_SNIPPET + "\n<!-- Google tag (gtag.js) -->");
+  }
+
+  // Lighthouse requires the charset declaration within the first 1024 bytes,
+  // so it (and the viewport tag) must precede the analytics snippets.
+  const charsetTags = '<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n';
+  if (!html.includes("<head>\n" + charsetTags)) {
+    html = html
+      .replace('<meta charset="UTF-8">\n', "")
+      .replace('<meta name="viewport" content="width=device-width, initial-scale=1.0">\n', "")
+      .replace("<head>\n", "<head>\n" + charsetTags);
   }
   if (!html.includes("js/webmcp.js")) {
     html = html.replace('<script src="../../js/main.js"></script>', '<script src="../../js/main.js"></script>\n<script src="../../js/webmcp.js" defer></script>');
@@ -746,6 +756,8 @@ function buildPostPage(title, dateDisplay, isoDate, bodyHtml, imagePath, excerpt
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>
 <script>
@@ -757,8 +769,6 @@ function buildPostPage(title, dateDisplay, isoDate, bodyHtml, imagePath, excerpt
 </script>
 <script src="https://analytics.ahrefs.com/analytics.js" data-key="${AHREFS_KEY}" async></script>
 ${CLARITY_SNIPPET}
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${escapeHtml(seoTitle(title))}</title>
 <meta name="description" content="${description}">
 <link rel="canonical" href="${canonicalUrl}">

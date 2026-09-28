@@ -138,10 +138,10 @@ def render_head(*, prefix, title, description, canonical_path, extra_schema="", 
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
-{GA_TAG}
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{GA_TAG}
+
 <title>{title}</title>
 <meta name="description" content="{description}">
 <link rel="canonical" href="{canonical}">{ai_plugin_link}
